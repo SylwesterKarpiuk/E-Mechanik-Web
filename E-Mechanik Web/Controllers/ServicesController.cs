@@ -4,10 +4,11 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
+using System.Security.Principal;
 using System.Web.Mvc;
 using E_Mechanik_Web.Models;
 using E_Mechanik_Web.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace E_Mechanik_Web.Controllers
 {
@@ -44,12 +45,12 @@ namespace E_Mechanik_Web.Controllers
             }
             return View(service);
         }
-
+        [Authorize]
         // GET: Services/Create
         public ActionResult Create()
         {
             var model = new CreateServiceViewModel();
-            model.Categories = _db.ServiceCategories.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+            model.Categories = _db.ServiceCategories.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });   
             return View(model);
         }
 
@@ -58,10 +59,13 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Price,ExecutionTime,MechanicId,ServiceCategoryId")] Service service)
+        public ActionResult Create([Bind(Include = "Id,Name,Price,ExecutionTime,ServiceCategoryId")] Service service)
         {
             if (ModelState.IsValid)
             {
+
+                var Name = this.HttpContext.User.Identity.Name;
+                service.MechanicId = Name;
                 _db.Services.Add(service);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -69,6 +73,8 @@ namespace E_Mechanik_Web.Controllers
 
             return View(service);
         }
+
+
 
         // GET: Services/Edit/5
         public ActionResult Edit(int? id)

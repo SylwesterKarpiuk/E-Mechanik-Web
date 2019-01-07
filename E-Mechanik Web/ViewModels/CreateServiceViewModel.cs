@@ -13,7 +13,7 @@ namespace E_Mechanik_Web.ViewModels
         public string Name { get; set; }
         public int Price { get; set; }
         public string ExecutionTime { get; set; }
-        public int MechanicId { get; set; }
+        public string MechanicName { get; set; }
         public int ServiceCategoryId { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
     }
