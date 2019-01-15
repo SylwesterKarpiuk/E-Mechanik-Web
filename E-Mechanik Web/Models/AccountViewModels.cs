@@ -79,6 +79,7 @@ namespace E_Mechanik_Web.Models
         [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Hasło i jego potwierdzenie są niezgodne.")]
         public string ConfirmPassword { get; set; }
+        public string Role { get; set; }
     }
 
     public class ResetPasswordViewModel

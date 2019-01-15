@@ -22,6 +22,8 @@ namespace E_Mechanik_Web.Models
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.Service> Services { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.ServiceCategory> ServiceCategories { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.Car> Cars { get; set; }
+
+        public System.Data.Entity.DbSet<E_Mechanik_Web.Models.Message> Messages { get; set; }
     }
 
 }

@@ -13,7 +13,7 @@ using E_Mechanik_Web.Models;
 namespace E_Mechanik_Web.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -151,12 +151,20 @@ namespace E_Mechanik_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
+                    if (model.Role == "Client")
+                    {
+                        var roleresult = UserManager.AddToRole(user.Id, "Client");
+                    }
+                    else if (model.Role == "Mechanic")
+                    {
+                        var roleresult = UserManager.AddToRole(user.Id, "Mechanic");
+                    }
                     // Aby uzyskać więcej informacji o sposobie włączania potwierdzania konta i resetowaniu hasła, odwiedź stronę https://go.microsoft.com/fwlink/?LinkID=320771
                     // Wyślij wiadomość e-mail z tym łączem
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
