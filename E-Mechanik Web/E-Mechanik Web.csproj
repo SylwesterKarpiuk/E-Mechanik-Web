@@ -174,6 +174,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AvailableServiceCategoriesController.cs" />
+    <Compile Include="Controllers\AvailableServicesController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\AvailableServiceCategories.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IEntity.cs" />
@@ -201,8 +204,10 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceCategory.cs" />
+    <Compile Include="Models\AvailableService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\CreateAvailableServiceViewModel.cs" />
     <Compile Include="ViewModels\CreateServiceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +283,16 @@
     <Content Include="Views\Messages\Details.cshtml" />
     <Content Include="Views\Messages\Edit.cshtml" />
     <Content Include="Views\Messages\Index.cshtml" />
+    <Content Include="Views\AvailableServiceCategories\Create.cshtml" />
+    <Content Include="Views\AvailableServiceCategories\Delete.cshtml" />
+    <Content Include="Views\AvailableServiceCategories\Details.cshtml" />
+    <Content Include="Views\AvailableServiceCategories\Edit.cshtml" />
+    <Content Include="Views\AvailableServiceCategories\Index.cshtml" />
+    <Content Include="Views\AvailableServices\Create.cshtml" />
+    <Content Include="Views\AvailableServices\Delete.cshtml" />
+    <Content Include="Views\AvailableServices\Details.cshtml" />
+    <Content Include="Views\AvailableServices\Edit.cshtml" />
+    <Content Include="Views\AvailableServices\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

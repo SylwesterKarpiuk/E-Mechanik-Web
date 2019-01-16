@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title — moja aplikacja platformy ASP.NET</title>
@@ -25,6 +25,12 @@
                     <li>@Html.ActionLink("Wiadmości", "Index", "Messages")</li>
                     <li>@Html.ActionLink("Usługi", "Index", "Services")</li>
                     <li>@Html.ActionLink("Kategorie", "Index", "ServiceCategories")</li>
+                   @* @if (User.IsInRole("Admin"))*@
+                    
+                        <li>@Html.ActionLink("Dostępne kategorie usług", "Index", "AvailableServiceCategories")</li>
+                        <li>@Html.ActionLink("Dostępne usługi", "Index", "AvailableServices")</li>
+                        
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
