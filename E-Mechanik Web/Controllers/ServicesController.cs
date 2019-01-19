@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Web.Mvc;
+using System.Web.Services;
 using E_Mechanik_Web.Models;
 using E_Mechanik_Web.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -45,12 +46,26 @@ namespace E_Mechanik_Web.Controllers
             }
             return View(service);
         }
-        [Authorize]
+
+        [HttpGet]
+        public ActionResult GetServices(string service)
+        {
+            IEnumerable<SelectListItem> services;
+            int categoryId = Int32.Parse(service);
+            if (_db.AvailableServices.Any(c => c.ServiceCategoryId == categoryId))
+            {
+                services = _db.AvailableServices.Where(p => p.ServiceCategoryId == categoryId).Select(n=> new SelectListItem { Value = n.Id.ToString(), Text = n.Name });
+                return Json(services, JsonRequestBehavior.AllowGet);
+            }
+            return Json("Przyklad", JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Services/Create
         public ActionResult Create()
         {
             var model = new CreateServiceViewModel();
-            model.Categories = _db.ServiceCategories.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });   
+            model.Categories = _db.AvailableServiceCategories.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+            model.Services = _db.AvailableServices.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
             return View(model);
         }
 
@@ -59,7 +74,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Price,ExecutionTime,ServiceCategoryId")] Service service)
+        public ActionResult Create([Bind(Include = "Name,Price,ExecutionTime,ServiceCategoryId")] Service service)
         {
             if (ModelState.IsValid)
             {
