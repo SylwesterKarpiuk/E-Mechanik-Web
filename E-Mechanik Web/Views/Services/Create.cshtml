@@ -74,23 +74,22 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $('#Category').change(function () {
-                var selectedCountry = $("#Category").val();
-                var regionsSelect = $('#Service');
-            regionsSelect.empty();
+                var selectedCategory = $("#Category").val();
+                var serviceSelect = $('#Service');
+            serviceSelect.empty();
 
-             if (selectedCountry != null && selectedCountry != '') {
-                 $.getJSON('@Url.Action("GetServices", "Services")', { service: selectedCountry }, function (regions) {
-                     alert(regions);
-                        if (regions != null && !jQuery.isEmptyObject(regions))
+            if (selectedCategory != null && selectedCategory != '') {
+                $.getJSON('@Url.Action("GetServices", "Services")', { service: selectedCategory }, function (services) {
+                     if (services != null && !jQuery.isEmptyObject(services))
                         {
-                            regionsSelect.append($('<option/>', {
+                         serviceSelect.append($('<option/>', {
                                 value: null,
                                 text: ""
                             }));
-                            $.each(regions, function (index, region) {
-                                regionsSelect.append($('<option/>', {
-                                    value: region.Text,
-                                    text: region.Text
+                         $.each(services, function (index, service) {
+                             serviceSelect.append($('<option/>', {
+                                    value: service.Text,
+                                    text: service.Text
                                 }));
                             });
                         };
