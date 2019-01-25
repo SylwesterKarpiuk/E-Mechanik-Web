@@ -27,6 +27,7 @@ namespace E_Mechanik_Web.Models
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.AvailableService> AvailableServices { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.AvailableServiceCategories> AvailableServiceCategories { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.MechanicProfiles> MechanicProfiles { get; set; }
+        public System.Data.Entity.DbSet<E_Mechanik_Web.Models.ClientProfile> ClientProfiles { get; set; }
     }
 
 }
