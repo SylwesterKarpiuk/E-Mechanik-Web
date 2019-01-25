@@ -79,6 +79,7 @@ namespace E_Mechanik_Web.Models
         [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Hasło i jego potwierdzenie są niezgodne.")]
         public string ConfirmPassword { get; set; }
+        [Required(ErrorMessage ="Zacznacz pole rejestracji jako mechanik, bądz klient")]
         public string Role { get; set; }
     }
 
