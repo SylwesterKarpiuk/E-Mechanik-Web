@@ -22,7 +22,10 @@
                 @Html.ActionLink("Utwórz", "SetPassword")
             }
             ]
+            
         </dd>
+        <dt>Profil: </dt>
+        <dd>@Html.ActionLink("Edytuj profil", "EditMechanicProfile")</dd>
         <dt>Logowania zewnętrzne:</dt>
         <dd>
             @Model.Logins.Count [

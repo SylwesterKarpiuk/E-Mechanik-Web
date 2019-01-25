@@ -7,11 +7,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using E_Mechanik_Web.Models;
+using System.Data.Entity;
 
 namespace E_Mechanik_Web.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -333,7 +334,45 @@ namespace E_Mechanik_Web.Controllers
             base.Dispose(disposing);
         }
 
-#region Pomocnicy
+        public ActionResult EditMechanicProfile()
+        {
+            string mechanicName = this.User.Identity.Name;
+            MechanicProfiles profile = new MechanicProfiles
+            {
+                MechanicName = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.MechanicName).FirstOrDefault(),
+                CompanyName = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.CompanyName).FirstOrDefault(),
+                Country = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.Country).FirstOrDefault(),
+                City = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.City).FirstOrDefault(),
+                PostalCode = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.PostalCode).FirstOrDefault(),
+                Address = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.Address).FirstOrDefault(),
+                PhoneNumber = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.PhoneNumber).FirstOrDefault()
+            };
+            return View(profile);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMechanicProfile([Bind(Include = "Id,CompanyName,Country,City,Address,PostalCode,PhoneNumber,MechanicName")] MechanicProfiles profile)
+        {
+            if (ModelState.IsValid)
+            {
+
+                // Edycja bazy danych bez użycia Entity Framework
+                MechanicProfiles x = _db.MechanicProfiles.Where(c =>c.MechanicName == profile.MechanicName).FirstOrDefault();
+                x.CompanyName = profile.CompanyName;
+                x.Country = profile.Country;
+                x.City = profile.City;
+                x.Address = profile.Address;
+                x.PostalCode = profile.PostalCode;
+                x.PhoneNumber = profile.PhoneNumber;
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(profile);
+        }
+
+        #region Pomocnicy
         // Służy do ochrony XSRF podczas dodawania logowań zewnętrznych
         private const string XsrfKey = "XsrfId";
 

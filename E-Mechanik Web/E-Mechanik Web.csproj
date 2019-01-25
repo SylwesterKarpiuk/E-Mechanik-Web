@@ -297,7 +297,7 @@
     <Content Include="Views\Account\FillMechanicProfile.cshtml" />
     <Content Include="Views\MechanicProfiles\Delete.cshtml" />
     <Content Include="Views\MechanicProfiles\Details.cshtml" />
-    <Content Include="Views\MechanicProfiles\Edit.cshtml" />
+    <Content Include="Views\Manage\EditMechanicProfile.cshtml" />
     <Content Include="Views\MechanicProfiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
