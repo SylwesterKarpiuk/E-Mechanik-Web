@@ -201,6 +201,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MechanicProfiles.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceCategory.cs" />
@@ -293,6 +294,11 @@
     <Content Include="Views\AvailableServices\Details.cshtml" />
     <Content Include="Views\AvailableServices\Edit.cshtml" />
     <Content Include="Views\AvailableServices\Index.cshtml" />
+    <Content Include="Views\Account\FillMechanicProfile.cshtml" />
+    <Content Include="Views\MechanicProfiles\Delete.cshtml" />
+    <Content Include="Views\MechanicProfiles\Details.cshtml" />
+    <Content Include="Views\MechanicProfiles\Edit.cshtml" />
+    <Content Include="Views\MechanicProfiles\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

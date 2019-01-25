@@ -164,6 +164,7 @@ namespace E_Mechanik_Web.Controllers
                     else if (model.Role == "Mechanic")
                     {
                         var roleresult = UserManager.AddToRole(user.Id, "Mechanic");
+                        return RedirectToAction("FillMechanicProfile", "Account");
                     }
                     // Aby uzyskać więcej informacji o sposobie włączania potwierdzania konta i resetowaniu hasła, odwiedź stronę https://go.microsoft.com/fwlink/?LinkID=320771
                     // Wyślij wiadomość e-mail z tym łączem
@@ -178,6 +179,30 @@ namespace E_Mechanik_Web.Controllers
 
             // Dotarcie do tego miejsca wskazuje, że wystąpił błąd, wyświetl ponownie formularz
             return View(model);
+        }
+
+        public ActionResult FillMechanicProfile()
+        {
+            MechanicProfiles profile = new MechanicProfiles();
+            profile.MechanicName = this.HttpContext.User.Identity.Name;
+            return View(profile);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FillMechanicProfile([Bind(Include = "CompanyName,Country,City,Address,PostalCode,PhoneNumber")] MechanicProfiles profile)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var Name = this.HttpContext.User.Identity.Name;
+                profile.MechanicName = Name;
+                _db.MechanicProfiles.Add(profile);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(profile);
         }
 
         //
