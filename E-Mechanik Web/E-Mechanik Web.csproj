@@ -297,6 +297,8 @@
     <Content Include="Views\AvailableServices\Index.cshtml" />
     <Content Include="Views\Account\FillMechanicProfile.cshtml" />
     <Content Include="Views\Manage\EditMechanicProfile.cshtml" />
+    <Content Include="Views\Account\FillClientProfile.cshtml" />
+    <Content Include="Views\Manage\EditClientProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -336,7 +336,7 @@ namespace E_Mechanik_Web.Controllers
 
         public ActionResult EditMechanicProfile()
         {
-            string mechanicName = this.User.Identity.Name;
+
             MechanicProfiles profile = new MechanicProfiles
             {
                 MechanicName = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.MechanicName).FirstOrDefault(),
@@ -356,20 +356,83 @@ namespace E_Mechanik_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                if (_db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault() != null)
+                {
+                    MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
+                    x.CompanyName = profile.CompanyName;
+                    x.Country = profile.Country;
+                    x.City = profile.City;
+                    x.Address = profile.Address;
+                    x.PostalCode = profile.PostalCode;
+                    x.PhoneNumber = profile.PhoneNumber;
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    var Name = this.HttpContext.User.Identity.Name;
+                    profile.MechanicName = Name;
+                    _db.MechanicProfiles.Add(profile);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
                 // Edycja bazy danych bez użycia Entity Framework
-                MechanicProfiles x = _db.MechanicProfiles.Where(c =>c.MechanicName == profile.MechanicName).FirstOrDefault();
-                x.CompanyName = profile.CompanyName;
-                x.Country = profile.Country;
-                x.City = profile.City;
-                x.Address = profile.Address;
-                x.PostalCode = profile.PostalCode;
-                x.PhoneNumber = profile.PhoneNumber;
-                _db.SaveChanges();
-                return RedirectToAction("Index", "Home");
+                
             }
 
             return View(profile);
+        }
+
+        public ActionResult EditClientProfile()
+        {
+            ClientProfile profile = new ClientProfile
+            {
+                ClientName = this.User.Identity.Name,
+                CarBrand = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.CarBrand).FirstOrDefault(),
+                CarModel = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.CarModel).FirstOrDefault(),
+                BodyType = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.BodyType).FirstOrDefault(),
+                EngineCapacity = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.EngineCapacity).FirstOrDefault(),
+                GasType = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.GasType).FirstOrDefault(),
+                LastTechnicalExamination = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.LastTechnicalExamination).FirstOrDefault(),
+                InsuranceEndDate = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.InsuranceEndDate).FirstOrDefault(),
+                Country = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.Country).FirstOrDefault(),
+                PhoneNumber = _db.ClientProfiles.Where(m => m.ClientName == this.User.Identity.Name).Select(k => k.PhoneNumber).FirstOrDefault(),
+            };
+            return View(profile);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditClientProfile([Bind(Include = "Id,ClientName,CarBrand,CarModel,BodyType,EngineCapacity,GasType,LastTechnicalExamination,InsuranceEndDate,Country,PhoneNumber")] ClientProfile clientProfile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_db.ClientProfiles.Where(c => c.ClientName == this.User.Identity.Name).FirstOrDefault() != null)
+                {
+                    ClientProfile x = _db.ClientProfiles.Where(c => c.ClientName == this.User.Identity.Name).FirstOrDefault();
+                    x.CarBrand = clientProfile.CarBrand;
+                    x.CarModel = clientProfile.CarModel;
+                    x.BodyType = clientProfile.BodyType;
+                    x.EngineCapacity = clientProfile.EngineCapacity;
+                    x.GasType = clientProfile.GasType;
+                    x.LastTechnicalExamination = clientProfile.LastTechnicalExamination;
+                    x.InsuranceEndDate = clientProfile.InsuranceEndDate;
+                    x.Country = clientProfile.Country;
+                    x.PhoneNumber = clientProfile.PhoneNumber;
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    var Name = this.HttpContext.User.Identity.Name;
+                    clientProfile.ClientName = Name;
+                    _db.ClientProfiles.Add(clientProfile);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            return View(clientProfile);
         }
 
         #region Pomocnicy

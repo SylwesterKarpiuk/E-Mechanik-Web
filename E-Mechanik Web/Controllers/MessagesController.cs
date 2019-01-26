@@ -10,6 +10,7 @@ using E_Mechanik_Web.Models;
 
 namespace E_Mechanik_Web.Controllers
 {
+    [Authorize]
     public class MessagesController : BaseController
     {
         // GET: Messages
@@ -120,13 +121,13 @@ namespace E_Mechanik_Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        _db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

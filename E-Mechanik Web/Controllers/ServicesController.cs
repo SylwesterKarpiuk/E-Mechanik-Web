@@ -60,6 +60,7 @@ namespace E_Mechanik_Web.Controllers
             return Json("Przyklad", JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize(Roles ="Mechanic")]
         // GET: Services/Create
         public ActionResult Create()
         {
@@ -91,6 +92,7 @@ namespace E_Mechanik_Web.Controllers
 
 
 
+        [Authorize(Roles = "Mechanic")]
         // GET: Services/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -122,6 +124,7 @@ namespace E_Mechanik_Web.Controllers
             return View(service);
         }
 
+        [Authorize(Roles = "Mechanic")]
         // GET: Services/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -148,13 +151,13 @@ namespace E_Mechanik_Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        _db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

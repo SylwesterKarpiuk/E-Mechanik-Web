@@ -22,7 +22,7 @@ namespace E_Mechanik_Web.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +34,9 @@ namespace E_Mechanik_Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -120,7 +120,7 @@ namespace E_Mechanik_Web.Controllers
             // Jeśli użytkownik będzie wprowadzać niepoprawny kod przez określoną ilość czasu, konto użytkownika 
             // zostanie zablokowane na określoną ilość czasu. 
             // Możesz skonfigurować ustawienia blokady konta w elemencie IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -151,26 +151,22 @@ namespace E_Mechanik_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded && model.Role !=null)
+                if (result.Succeeded && model.Role != null)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     if (model.Role == "Client")
                     {
                         var roleresult = UserManager.AddToRole(user.Id, "Client");
+                        return RedirectToAction("FillClientProfile", "Account");
                     }
                     else if (model.Role == "Mechanic")
                     {
                         var roleresult = UserManager.AddToRole(user.Id, "Mechanic");
                         return RedirectToAction("FillMechanicProfile", "Account");
                     }
-                    // Aby uzyskać więcej informacji o sposobie włączania potwierdzania konta i resetowaniu hasła, odwiedź stronę https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Wyślij wiadomość e-mail z tym łączem
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Potwierdź konto", "Potwierdź konto, klikając <a href=\"" + callbackUrl + "\">tutaj</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -181,6 +177,7 @@ namespace E_Mechanik_Web.Controllers
             return View(model);
         }
 
+        //[Authorize(Roles = "Mechanic")]
         public ActionResult FillMechanicProfile()
         {
             MechanicProfiles profile = new MechanicProfiles();
@@ -204,6 +201,33 @@ namespace E_Mechanik_Web.Controllers
 
             return View(profile);
         }
+
+
+        //[Authorize(Roles = "Client")]
+        public ActionResult FillClientProfile()
+        {
+            ClientProfile profile = new ClientProfile();
+            profile.ClientName = this.HttpContext.User.Identity.Name;
+            return View(profile);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FillClientProfile([Bind(Include = "CarBrand,CarModel,BodyType,EngineCapacity,GasType,LastTechnicalExamination, InsuranceEndDate,Country,PhoneNumber")] ClientProfile profile)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var Name = this.HttpContext.User.Identity.Name;
+                profile.ClientName = Name;
+                _db.ClientProfiles.Add(profile);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(profile);
+        }
+
 
         //
         // GET: /Account/ConfirmEmail
@@ -436,25 +460,25 @@ namespace E_Mechanik_Web.Controllers
             return View();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (_userManager != null)
-                {
-                    _userManager.Dispose();
-                    _userManager = null;
-                }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        if (_userManager != null)
+        //        {
+        //            _userManager.Dispose();
+        //            _userManager = null;
+        //        }
 
-                if (_signInManager != null)
-                {
-                    _signInManager.Dispose();
-                    _signInManager = null;
-                }
-            }
+        //        if (_signInManager != null)
+        //        {
+        //            _signInManager.Dispose();
+        //            _signInManager = null;
+        //        }
+        //    }
 
-            base.Dispose(disposing);
-        }
+        //    base.Dispose(disposing);
+        //}
 
         #region Pomocnicy
         // Używane w przypadku ochrony XSRF podczas dodawania logowań zewnętrznych
