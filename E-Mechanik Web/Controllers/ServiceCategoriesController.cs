@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -30,6 +31,19 @@ namespace E_Mechanik_Web.Controllers
             if (serviceCategory == null)
             {
                 return HttpNotFound();
+            }
+            var list = new ArrayList();
+            var list2 = serviceCategory.Services.ToArray();
+            foreach (var item in list2)
+            {
+                if (list.Contains(item.Name))
+                {
+                    serviceCategory.Services.Remove(item);
+                }
+                else
+                {
+                    list.Add(item.Name);
+                }
             }
             return View(serviceCategory);
         }
@@ -114,13 +128,5 @@ namespace E_Mechanik_Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        _db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

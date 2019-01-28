@@ -9,18 +9,19 @@
 <div>
     <h4>ServiceCategory</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+    <h1>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        @Html.DisplayFor(model => model.Name)
 
-    </dl>
+    </h1>
+
+    @foreach (var item in Model.Services)
+    {
+        <dl>
+            @Html.ActionLink(@item.Name, "GetServicesByName", new { Controller = "Services", name = item.Name })
+        </dl>
+    }
+
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -18,18 +19,21 @@ namespace E_Mechanik_Web.Controllers
         // GET: Services
         public ActionResult Index(int? categoryId = null)
         {
-            IEnumerable<Service> services;
-            if (categoryId.HasValue)
+            IEnumerable<Service> services = _db.Services;
+            List<Service> list = services.ToList();
+            var list2 = new List<string>();
+            foreach (var item in services)
             {
-                if (_db.ServiceCategories.Any(c => c.Id == categoryId.Value))
+                if (list2.Contains(item.Name))
                 {
-                    services = _db.Services.Where(p => p.ServiceCategoryId == categoryId.Value);
-                    return View(services);
+                    list.Remove(item);
                 }
-                
+                else
+                {
+                    list2.Add(item.Name);
+                }
             }
-            services = _db.Services;
-            return View(services);
+            return View(list);
         }
 
         // GET: Services/Details/5
@@ -54,13 +58,13 @@ namespace E_Mechanik_Web.Controllers
             int categoryId = Int32.Parse(service);
             if (_db.AvailableServices.Any(c => c.ServiceCategoryId == categoryId))
             {
-                services = _db.AvailableServices.Where(p => p.ServiceCategoryId == categoryId).Select(n=> new SelectListItem { Value = n.Id.ToString(), Text = n.Name });
+                services = _db.AvailableServices.Where(p => p.ServiceCategoryId == categoryId).Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Name });
                 return Json(services, JsonRequestBehavior.AllowGet);
             }
             return Json("Przyklad", JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles ="Mechanic")]
+        [Authorize(Roles = "Mechanic")]
         // GET: Services/Create
         public ActionResult Create()
         {
@@ -79,7 +83,7 @@ namespace E_Mechanik_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                var x = service.ServiceCategoryId;
                 var Name = this.HttpContext.User.Identity.Name;
                 service.MechanicId = Name;
                 _db.Services.Add(service);
@@ -150,14 +154,11 @@ namespace E_Mechanik_Web.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        _db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
+        //http://localhost:63575/Services/GetServicesByName/JakasUsluga
+        public ActionResult GetServicesByName(string name)
+        {
+            IEnumerable<Service> services = _db.Services.Where(c => c.Name == name);
+            return View(services);
+        }
     }
 }
