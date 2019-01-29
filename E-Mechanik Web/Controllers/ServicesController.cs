@@ -154,7 +154,7 @@ namespace E_Mechanik_Web.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-        //http://localhost:63575/Services/GetServicesByName/JakasUsluga
+
         public ActionResult GetServicesByName(string name)
         {
             IEnumerable<Service> services = _db.Services.Where(c => c.Name == name);
