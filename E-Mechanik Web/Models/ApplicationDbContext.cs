@@ -20,12 +20,10 @@ namespace E_Mechanik_Web.Models
         }
 
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.Service> Services { get; set; }
-        public System.Data.Entity.DbSet<E_Mechanik_Web.Models.ServiceCategory> ServiceCategories { get; set; }
-        public System.Data.Entity.DbSet<E_Mechanik_Web.Models.Car> Cars { get; set; }
 
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.Message> Messages { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.AvailableService> AvailableServices { get; set; }
-        public System.Data.Entity.DbSet<E_Mechanik_Web.Models.AvailableServiceCategories> AvailableServiceCategories { get; set; }
+        public System.Data.Entity.DbSet<E_Mechanik_Web.Models.AvailableServiceCategory> AvailableServiceCategories { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.MechanicProfiles> MechanicProfiles { get; set; }
         public System.Data.Entity.DbSet<E_Mechanik_Web.Models.ClientProfile> ClientProfiles { get; set; }
     }

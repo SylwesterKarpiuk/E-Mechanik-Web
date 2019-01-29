@@ -15,7 +15,7 @@ namespace E_Mechanik_Web.ViewModels
         public int Price { get; set; }
         public string ExecutionTime { get; set; }
         public string MechanicName { get; set; }
-        public int ServiceCategoryId { get; set; }
+        public int AvailableServiceCategoryId { get; set; }
         public string SelectedCategory { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
         public string SelectedService { get; set; }

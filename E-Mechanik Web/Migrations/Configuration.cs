@@ -9,7 +9,7 @@ namespace E_Mechanik_Web.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(E_Mechanik_Web.Models.ApplicationDbContext context)

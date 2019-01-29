@@ -1,4 +1,4 @@
-﻿@model E_Mechanik_Web.Models.AvailableServiceCategories
+﻿@model E_Mechanik_Web.Models.AvailableServiceCategory
 
 @{
     ViewBag.Title = "Details";
@@ -14,12 +14,16 @@
             @Html.DisplayNameFor(model => model.Name)
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+        @foreach (var item in Model.Services)
+        {
+            <dt>
+                @Html.ActionLink(@item.Name, "GetServicesByName", new { Controller = "Services", name = item.Name })
+            </dt>
+        }
 
     </dl>
 </div>
+<br />
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -26,10 +27,23 @@ namespace E_Mechanik_Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AvailableServiceCategories availableServiceCategories = _db.AvailableServiceCategories.Find(id);
+            AvailableServiceCategory availableServiceCategories = _db.AvailableServiceCategories.Find(id);
             if (availableServiceCategories == null)
             {
                 return HttpNotFound();
+            }
+            var list = new ArrayList();
+            var list2 = availableServiceCategories.Services.ToArray();
+            foreach (var item in list2)
+            {
+                if (list.Contains(item.Name))
+                {
+                    availableServiceCategories.Services.Remove(item);
+                }
+                else
+                {
+                    list.Add(item.Name);
+                }
             }
             return View(availableServiceCategories);
         }
@@ -45,7 +59,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] AvailableServiceCategories availableServiceCategories)
+        public ActionResult Create([Bind(Include = "Id,Name")] AvailableServiceCategory availableServiceCategories)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +78,7 @@ namespace E_Mechanik_Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AvailableServiceCategories availableServiceCategories = _db.AvailableServiceCategories.Find(id);
+            AvailableServiceCategory availableServiceCategories = _db.AvailableServiceCategories.Find(id);
             if (availableServiceCategories == null)
             {
                 return HttpNotFound();
@@ -77,7 +91,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] AvailableServiceCategories availableServiceCategories)
+        public ActionResult Edit([Bind(Include = "Id,Name")] AvailableServiceCategory availableServiceCategories)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +109,7 @@ namespace E_Mechanik_Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AvailableServiceCategories availableServiceCategories = _db.AvailableServiceCategories.Find(id);
+            AvailableServiceCategory availableServiceCategories = _db.AvailableServiceCategories.Find(id);
             if (availableServiceCategories == null)
             {
                 return HttpNotFound();
@@ -108,7 +122,7 @@ namespace E_Mechanik_Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            AvailableServiceCategories availableServiceCategories = _db.AvailableServiceCategories.Find(id);
+            AvailableServiceCategory availableServiceCategories = _db.AvailableServiceCategories.Find(id);
             _db.AvailableServiceCategories.Remove(availableServiceCategories);
             _db.SaveChanges();
             return RedirectToAction("Index");

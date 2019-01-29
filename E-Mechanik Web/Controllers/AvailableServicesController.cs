@@ -48,7 +48,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ServiceCategoryId")] AvailableService availableService)
+        public ActionResult Create([Bind(Include = "Id,Name,AvailableServiceCategoryId")] AvailableService availableService)
         {
             if (ModelState.IsValid)
             {
@@ -80,7 +80,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ServiceCategoryId")] AvailableService availableService)
+        public ActionResult Edit([Bind(Include = "Id,Name,AvailableServiceCategoryId")] AvailableService availableService)
         {
             if (ModelState.IsValid)
             {

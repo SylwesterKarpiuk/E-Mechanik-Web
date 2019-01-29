@@ -9,20 +9,21 @@ namespace E_Mechanik_Web.Controllers
 {
     public class HomeController : BaseController
     {
-        public ActionResult Index(string search=null)
+        public ActionResult Index(string search = null)
         {
-            List<ServiceCategory> model;
+            List<AvailableServiceCategory> model;
             if (!string.IsNullOrEmpty(search))
             {
-                model = _db.ServiceCategories.Where(c => c.Name.Contains(search)).ToList();
-                var categoryIds = _db.Services.Where(p => p.Name.Contains(search)).Select(p => p.ServiceCategoryId);
-                model.AddRange(_db.ServiceCategories.Where(c => categoryIds.Contains(c.Id)));
+                model = _db.AvailableServiceCategories.Where(c => c.Name.Contains(search)).ToList();
+                var categoryIds = _db.Services.Where(p => p.Name.Contains(search)).Select(p => p.AvailableServiceCategoryId);
+                model.AddRange(_db.AvailableServiceCategories.Where(c => categoryIds.Contains(c.Id)));
                 model.Distinct();
             }
             else
             {
-                model = _db.ServiceCategories.ToList();
+                model = _db.AvailableServiceCategories.ToList();
             }
+            
             return View(model);
         }
 

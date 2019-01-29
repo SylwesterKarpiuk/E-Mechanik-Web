@@ -8,6 +8,6 @@ namespace E_Mechanik_Web.Models
     public class AvailableService : IEntity
     {
         public string Name { get; set; }
-        public int ServiceCategoryId { get; set; }
+        public int AvailableServiceCategoryId { get; set; }
     }
 }

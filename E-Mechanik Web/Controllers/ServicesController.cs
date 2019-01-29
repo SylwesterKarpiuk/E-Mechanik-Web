@@ -56,9 +56,9 @@ namespace E_Mechanik_Web.Controllers
         {
             IEnumerable<SelectListItem> services;
             int categoryId = Int32.Parse(service);
-            if (_db.AvailableServices.Any(c => c.ServiceCategoryId == categoryId))
+            if (_db.AvailableServices.Any(c => c.AvailableServiceCategoryId == categoryId))
             {
-                services = _db.AvailableServices.Where(p => p.ServiceCategoryId == categoryId).Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Name });
+                services = _db.AvailableServices.Where(p => p.AvailableServiceCategoryId == categoryId).Select(n => new SelectListItem { Value = n.Id.ToString(), Text = n.Name });
                 return Json(services, JsonRequestBehavior.AllowGet);
             }
             return Json("Przyklad", JsonRequestBehavior.AllowGet);
@@ -79,11 +79,11 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Name,Price,ExecutionTime,ServiceCategoryId")] Service service)
+        public ActionResult Create([Bind(Include = "Name,Price,ExecutionTime,AvailableServiceCategoryId")] Service service)
         {
             if (ModelState.IsValid)
             {
-                var x = service.ServiceCategoryId;
+                var x = service.AvailableServiceCategoryId;
                 var Name = this.HttpContext.User.Identity.Name;
                 service.MechanicId = Name;
                 _db.Services.Add(service);

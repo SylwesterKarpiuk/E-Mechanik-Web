@@ -13,6 +13,6 @@ namespace E_Mechanik_Web.Models
         public int Price { get; set; }
         public string ExecutionTime { get; set; }
         public string MechanicId { get; set; }
-        public int ServiceCategoryId { get; set; }
+        public int AvailableServiceCategoryId { get; set; }
     }
 }

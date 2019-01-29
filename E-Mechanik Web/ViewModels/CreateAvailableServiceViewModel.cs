@@ -12,7 +12,7 @@ namespace E_Mechanik_Web.ViewModels
     {
         [Required]
         public string Name { get; set; }
-        public int ServiceCategoryId { get; set; }
+        public int AvailableServiceCategoryId { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
     }
 }

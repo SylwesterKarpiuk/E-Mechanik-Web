@@ -185,19 +185,26 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201901021302130_MechanicInitial.cs" />
-    <Compile Include="Migrations\201901021302130_MechanicInitial.Designer.cs">
-      <DependentUpon>201901021302130_MechanicInitial.cs</DependentUpon>
+    <Compile Include="Migrations\201901291054595_init.cs" />
+    <Compile Include="Migrations\201901291054595_init.Designer.cs">
+      <DependentUpon>201901291054595_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201901041150214_MechanicInitialFix.cs" />
-    <Compile Include="Migrations\201901041150214_MechanicInitialFix.Designer.cs">
-      <DependentUpon>201901041150214_MechanicInitialFix.cs</DependentUpon>
+    <Compile Include="Migrations\201901291345117_car-model-delete.cs" />
+    <Compile Include="Migrations\201901291345117_car-model-delete.Designer.cs">
+      <DependentUpon>201901291345117_car-model-delete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901291352242_connection.cs" />
+    <Compile Include="Migrations\201901291352242_connection.Designer.cs">
+      <DependentUpon>201901291352242_connection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901291428457_connection2.cs" />
+    <Compile Include="Migrations\201901291428457_connection2.Designer.cs">
+      <DependentUpon>201901291428457_connection2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\AvailableServiceCategories.cs" />
-    <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\AvailableServiceCategory.cs" />
     <Compile Include="Models\ClientProfile.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IEntity.cs" />
@@ -275,11 +282,6 @@
     <Content Include="Views\Services\Details.cshtml" />
     <Content Include="Views\Services\Edit.cshtml" />
     <Content Include="Views\Services\Index.cshtml" />
-    <Content Include="Views\ServiceCategories\Create.cshtml" />
-    <Content Include="Views\ServiceCategories\Delete.cshtml" />
-    <Content Include="Views\ServiceCategories\Details.cshtml" />
-    <Content Include="Views\ServiceCategories\Edit.cshtml" />
-    <Content Include="Views\ServiceCategories\Index.cshtml" />
     <Content Include="Views\Messages\Create.cshtml" />
     <Content Include="Views\Messages\Delete.cshtml" />
     <Content Include="Views\Messages\Details.cshtml" />
@@ -319,11 +321,17 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201901021302130_MechanicInitial.resx">
-      <DependentUpon>201901021302130_MechanicInitial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901291054595_init.resx">
+      <DependentUpon>201901291054595_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201901041150214_MechanicInitialFix.resx">
-      <DependentUpon>201901041150214_MechanicInitialFix.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201901291345117_car-model-delete.resx">
+      <DependentUpon>201901291345117_car-model-delete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901291352242_connection.resx">
+      <DependentUpon>201901291352242_connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901291428457_connection2.resx">
+      <DependentUpon>201901291428457_connection2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
