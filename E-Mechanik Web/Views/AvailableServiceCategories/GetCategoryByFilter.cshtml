@@ -1,0 +1,25 @@
+﻿@model IEnumerable<E_Mechanik_Web.Models.AvailableServiceCategory>
+
+@{
+    var list = new List<string>();
+}
+
+
+    @foreach (var category in Model)
+    {
+        list = new List<string>();
+        <div class="col-md-4">
+            <h2>@category.Name</h2>
+            <ul>
+                @foreach (var product in category.Services)
+                {
+                    if (!list.Contains(product.Name))
+                    {
+                        list.Add(product.Name);
+                        <li>@Html.ActionLink(@product.Name, "GetServicesByName", new { Controller = "Services", name = product.Name }) </li>
+                    }
+
+                }
+            </ul>
+        </div>
+    }

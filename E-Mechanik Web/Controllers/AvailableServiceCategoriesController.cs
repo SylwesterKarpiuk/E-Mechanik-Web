@@ -128,13 +128,22 @@ namespace E_Mechanik_Web.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult GetCategoryByFilter(string search = null)
         {
-            if (disposing)
+            List<AvailableServiceCategory> model;
+            if (!string.IsNullOrEmpty(search))
             {
-                _db.Dispose();
+                model = _db.AvailableServiceCategories.Where(c => c.Name.Contains(search)).ToList();
+                var categoryIds = _db.Services.Where(p => p.Name.Contains(search)).Select(p => p.AvailableServiceCategoryId);
+                model.AddRange(_db.AvailableServiceCategories.Where(c => categoryIds.Contains(c.Id)));
+                model.Distinct();
             }
-            base.Dispose(disposing);
+            else
+            {
+                model = _db.AvailableServiceCategories.ToList();
+            }
+
+            return PartialView(model);
         }
     }
 }
