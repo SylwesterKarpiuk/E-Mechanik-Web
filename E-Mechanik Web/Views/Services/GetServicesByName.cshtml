@@ -4,7 +4,9 @@
     ViewBag.Title = "GetServicesByName";
 }
 
-<h2>GetServicesByName</h2>
+<script>
+    var array = [];
+</script>
 
 <table class="table">
     <tr>
@@ -12,32 +14,88 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.MechanicName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExecutionTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MechanicId)
+            @Html.DisplayNameFor(model => model.Distance)
         </th>
         <th></th>
     </tr>
+    @{ int i = 0;}
+    @foreach (var service in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(service.Name, "Details", new { id = service.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => service.MechanicName)
+            </td>
+            <td>
+                <input type="text" hidden="hidden" id="City" value=@service.mechanicProfile.City />
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.Name, "Details", new { id = item.Id }) 
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExecutionTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MechanicId)
-        </td>
-    </tr>
-}
+
+                @{service.Distance = service.mechanicProfile.Address + ", " + service.mechanicProfile.City;}
+                <div id="@service.MechanicName">
+                    @Html.DisplayFor(modelItem => service.Distance)
+                </div>
+                @if (Model.Count() > -1)
+                {
+                    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBLMa7emvhGQMK0uYYrS-9aymoEhlX-4sU" type="text/javascript"></script>
+                    <script>
+                                var source="X", destination;
+                                var directionsDisplay;
+                                var directionsService = new google.maps.DirectionsService();
+                                // initialise the location of the map on Chichester in England (ref lat and lng)
+                                var map = new google.maps.Map("", {
+                                    center: { lat: 50.834697, lng: -0.773792 },
+                                    zoom: 13,
+                                    mapTypeId: 'roadmap'
+                                });
+
+
+                                google.maps.event.addDomListener(window, 'load', function () {
+                                    new google.maps.places.SearchBox(document.getElementById('lati'));
+                                    new google.maps.places.SearchBox(@Html.Raw(Json.Encode(service.Distance)));
+                                    directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+                        });
+                        navigator.geolocation.getCurrentPosition(function (position) {
+
+                            source =  position.coords.latitude + ", " + position.coords.longitude;
+                                   destination = @Html.Raw(Json.Encode(service.Distance));
+
+                                    //*********DISTANCE AND DURATION**********************//
+                                    var service = new google.maps.DistanceMatrixService();
+                                    service.getDistanceMatrix({
+                                        origins: [source],
+                                        destinations: [destination],
+                                        travelMode: google.maps.TravelMode.DRIVING,
+                                        unitSystem: google.maps.UnitSystem.METRIC,
+                                        avoidHighways: false,
+                                        avoidTolls: false
+                                    }, function (response, status) {
+
+                                        if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS" && response.rows[0].elements[0].status != "NOT_FOUND") {
+                                            var distance = response.rows[0].elements[0].distance.text;
+                                            document.getElementById(@Html.Raw(Json.Encode(@service.MechanicName))).innerHTML = distance;
+                                            array[@Html.Raw(Json.Encode(i))] = distance;
+                                        } else {
+
+                                        }
+                                    });
+                            });
+
+
+
+
+
+                    </script>
+                }
+            </td>
+        </tr>
+    }
 
 </table>
+<!---TODO - button powalający na sortowanie wyników-->
+
+

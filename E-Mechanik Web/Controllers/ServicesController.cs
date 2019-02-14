@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -11,6 +12,7 @@ using System.Web.Services;
 using E_Mechanik_Web.Models;
 using E_Mechanik_Web.ViewModels;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 
 namespace E_Mechanik_Web.Controllers
 {
@@ -85,7 +87,8 @@ namespace E_Mechanik_Web.Controllers
             {
                 var x = service.AvailableServiceCategoryId;
                 var Name = this.HttpContext.User.Identity.Name;
-                service.MechanicId = Name;
+                service.MechanicName = Name;
+                service.mechanicProfile = _db.MechanicProfiles.Where(c => c.MechanicName == service.MechanicName).FirstOrDefault();
                 _db.Services.Add(service);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
@@ -158,7 +161,33 @@ namespace E_Mechanik_Web.Controllers
         public ActionResult GetServicesByName(string name)
         {
             IEnumerable<Service> services = _db.Services.Where(c => c.Name == name);
+        
             return View(services);
+        }
+        public static RootObject GetLatLongByAddress(string address)
+        {
+            var root = new RootObject();
+
+            var url =
+                string.Format(
+                    "https://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false&key=", address);
+            var req = (HttpWebRequest)WebRequest.Create(url);
+
+            var res = (HttpWebResponse)req.GetResponse();
+
+            using (var streamreader = new StreamReader(res.GetResponseStream()))
+            {
+                var result = streamreader.ReadToEnd();
+
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    root = JsonConvert.DeserializeObject<RootObject>(result);
+                }
+            }
+
+            return root;
+
+
         }
     }
 }

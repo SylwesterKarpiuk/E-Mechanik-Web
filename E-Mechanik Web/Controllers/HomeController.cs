@@ -1,14 +1,19 @@
 ﻿using E_Mechanik_Web.Models;
+using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Data;
+using System.IO;
+using System.Net;
+using System.Text;
 using System.Web.Mvc;
 
 namespace E_Mechanik_Web.Controllers
 {
     public class HomeController : BaseController
     {
+
         public ActionResult Index()
         {
             return View();
@@ -27,5 +32,6 @@ namespace E_Mechanik_Web.Controllers
 
             return View();
         }
+
     }
 }

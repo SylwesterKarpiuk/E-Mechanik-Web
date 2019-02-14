@@ -10,9 +10,9 @@ namespace E_Mechanik_Web.Models
     {
         [Required]
         public string Name { get; set; }
-        public int Price { get; set; }
-        public string ExecutionTime { get; set; }
-        public string MechanicId { get; set; }
+        public string Distance { get; set; }
+        public string MechanicName { get; set; }
+        public virtual MechanicProfiles mechanicProfile { get; set; }
         public int AvailableServiceCategoryId { get; set; }
     }
 }

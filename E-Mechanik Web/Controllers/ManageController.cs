@@ -341,9 +341,7 @@ namespace E_Mechanik_Web.Controllers
             {
                 MechanicName = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.MechanicName).FirstOrDefault(),
                 CompanyName = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.CompanyName).FirstOrDefault(),
-                Country = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.Country).FirstOrDefault(),
                 City = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.City).FirstOrDefault(),
-                PostalCode = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.PostalCode).FirstOrDefault(),
                 Address = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.Address).FirstOrDefault(),
                 PhoneNumber = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.PhoneNumber).FirstOrDefault()
             };
@@ -360,10 +358,8 @@ namespace E_Mechanik_Web.Controllers
                 {
                     MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
                     x.CompanyName = profile.CompanyName;
-                    x.Country = profile.Country;
                     x.City = profile.City;
                     x.Address = profile.Address;
-                    x.PostalCode = profile.PostalCode;
                     x.PhoneNumber = profile.PhoneNumber;
                     _db.SaveChanges();
                     return RedirectToAction("Index", "Home");

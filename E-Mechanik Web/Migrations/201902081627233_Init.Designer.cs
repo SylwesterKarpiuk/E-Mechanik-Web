@@ -7,13 +7,13 @@ namespace E_Mechanik_Web.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class carmodeldelete : IMigrationMetadata
+    public sealed partial class Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(carmodeldelete));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201901291345117_car-model-delete"; }
+            get { return "201902081627233_Init"; }
         }
         
         string IMigrationMetadata.Source

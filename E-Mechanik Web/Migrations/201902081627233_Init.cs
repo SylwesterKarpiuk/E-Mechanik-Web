@@ -3,7 +3,7 @@ namespace E_Mechanik_Web.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class init : DbMigration
+    public partial class Init : DbMigration
     {
         public override void Up()
         {
@@ -22,12 +22,11 @@ namespace E_Mechanik_Web.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        ServiceCategoryId = c.Int(nullable: false),
-                        AvailableServiceCategories_Id = c.Int(),
+                        AvailableServiceCategoryId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AvailableServiceCategories", t => t.AvailableServiceCategories_Id)
-                .Index(t => t.AvailableServiceCategories_Id);
+                .ForeignKey("dbo.AvailableServiceCategories", t => t.AvailableServiceCategoryId, cascadeDelete: true)
+                .Index(t => t.AvailableServiceCategoryId);
             
             CreateTable(
                 "dbo.Services",
@@ -35,28 +34,29 @@ namespace E_Mechanik_Web.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
-                        Price = c.Int(nullable: false),
-                        ExecutionTime = c.String(),
-                        MechanicId = c.String(),
+                        Distance = c.String(),
+                        MechanicName = c.String(),
                         AvailableServiceCategoryId = c.Int(nullable: false),
-                        AvailableServiceCategories_Id = c.Int(),
+                        mechanicProfile_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AvailableServiceCategories", t => t.AvailableServiceCategories_Id)
-                .Index(t => t.AvailableServiceCategories_Id);
+                .ForeignKey("dbo.MechanicProfiles", t => t.mechanicProfile_Id)
+                .ForeignKey("dbo.AvailableServiceCategories", t => t.AvailableServiceCategoryId, cascadeDelete: true)
+                .Index(t => t.AvailableServiceCategoryId)
+                .Index(t => t.mechanicProfile_Id);
             
             CreateTable(
-                "dbo.Cars",
+                "dbo.MechanicProfiles",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ClientId = c.Int(nullable: false),
-                        Brand = c.String(nullable: false),
-                        ModelName = c.String(nullable: false),
-                        Body = c.String(),
-                        EngineCapacity = c.String(),
-                        FuelType = c.String(),
-                        Year = c.Int(nullable: false),
+                        MechanicName = c.String(),
+                        CompanyName = c.String(),
+                        Country = c.String(),
+                        City = c.String(),
+                        Address = c.String(),
+                        PostalCode = c.String(),
+                        PhoneNumber = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -74,21 +74,6 @@ namespace E_Mechanik_Web.Migrations
                         LastTechnicalExamination = c.String(),
                         InsuranceEndDate = c.String(),
                         Country = c.String(),
-                        PhoneNumber = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.MechanicProfiles",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        MechanicName = c.String(),
-                        CompanyName = c.String(),
-                        Country = c.String(),
-                        City = c.String(),
-                        Address = c.String(),
-                        PostalCode = c.String(),
                         PhoneNumber = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -182,25 +167,26 @@ namespace E_Mechanik_Web.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Services", "AvailableServiceCategories_Id", "dbo.AvailableServiceCategories");
-            DropForeignKey("dbo.AvailableServices", "AvailableServiceCategories_Id", "dbo.AvailableServiceCategories");
+            DropForeignKey("dbo.Services", "AvailableServiceCategoryId", "dbo.AvailableServiceCategories");
+            DropForeignKey("dbo.Services", "mechanicProfile_Id", "dbo.MechanicProfiles");
+            DropForeignKey("dbo.AvailableServices", "AvailableServiceCategoryId", "dbo.AvailableServiceCategories");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Services", new[] { "AvailableServiceCategories_Id" });
-            DropIndex("dbo.AvailableServices", new[] { "AvailableServiceCategories_Id" });
+            DropIndex("dbo.Services", new[] { "mechanicProfile_Id" });
+            DropIndex("dbo.Services", new[] { "AvailableServiceCategoryId" });
+            DropIndex("dbo.AvailableServices", new[] { "AvailableServiceCategoryId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Messages");
-            DropTable("dbo.MechanicProfiles");
             DropTable("dbo.ClientProfiles");
-            DropTable("dbo.Cars");
+            DropTable("dbo.MechanicProfiles");
             DropTable("dbo.Services");
             DropTable("dbo.AvailableServices");
             DropTable("dbo.AvailableServiceCategories");

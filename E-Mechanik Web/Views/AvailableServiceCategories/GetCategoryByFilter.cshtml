@@ -5,21 +5,39 @@
 }
 
 
-    @foreach (var category in Model)
-    {
-        list = new List<string>();
-        <div class="col-md-4">
-            <h2>@category.Name</h2>
-            <ul>
-                @foreach (var product in category.Services)
+<input id="lati" type="text">latitude</>
+<input id="long" type="text">longitude</>
+<div id="dvMap" style="min-height:500px; display: none"></div><!-- display: none - mapa się nie wyświetla użytkownikowi-->
+
+
+<script type="text/javascript">
+    navigator.geolocation.getCurrentPosition(function (position) {
+        var z = position.coords.latitude + ", " + position.coords.longitude;
+        document.getElementById('lati').value = z;
+    });
+</script>
+
+
+
+
+@foreach (var category in Model)
+{
+    list = new List<string>();
+    <div class="col-md-4">
+        <h2>@category.Name</h2>
+        <ul>
+            @foreach (var product in category.Services)
+            {
+                if (!list.Contains(product.Name))
                 {
-                    if (!list.Contains(product.Name))
-                    {
-                        list.Add(product.Name);
-                        <li>@Html.ActionLink(@product.Name, "GetServicesByName", new { Controller = "Services", name = product.Name }) </li>
-                    }
+                    list.Add(product.Name);
+                    <li>
+                        @Html.ActionLink(@product.Name, "GetServicesByName", new { Controller = "Services", name = product.Name, myLat = "", lon = "" })
+                    </li>
 
                 }
-            </ul>
-        </div>
-    }
+
+            }
+        </ul>
+    </div>
+}

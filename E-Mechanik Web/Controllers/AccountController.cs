@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using E_Mechanik_Web.Models;
+using System.Net;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace E_Mechanik_Web.Controllers
 {
@@ -187,13 +190,15 @@ namespace E_Mechanik_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FillMechanicProfile([Bind(Include = "CompanyName,Country,City,Address,PostalCode,PhoneNumber")] MechanicProfiles profile)
+        public ActionResult FillMechanicProfile([Bind(Include = "CompanyName,City,Address,PhoneNumber")] MechanicProfiles profile)
         {
+        
             if (ModelState.IsValid)
             {
 
                 var Name = this.HttpContext.User.Identity.Name;
                 profile.MechanicName = Name;
+                profile.position = GetLatLongByAddress(profile.Address + " " + profile.City);
                 _db.MechanicProfiles.Add(profile);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Home");
@@ -227,7 +232,33 @@ namespace E_Mechanik_Web.Controllers
 
             return View(profile);
         }
+        public static Position GetLatLongByAddress(string address)
+        {
+            var position = new Position();
+            var root = new RootObject();
 
+            var url =
+                string.Format(
+                    "https://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false&key=AIzaSyAj3--uLCLX58Q-LFxJisocb1z97cerQjc", address);
+            var req = (HttpWebRequest)WebRequest.Create(url);
+
+            var res = (HttpWebResponse)req.GetResponse();
+
+            using (var streamreader = new StreamReader(res.GetResponseStream()))
+            {
+                var result = streamreader.ReadToEnd();
+
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    root = JsonConvert.DeserializeObject<RootObject>(result);
+                }
+            }
+            position.Lat = root.results.FirstOrDefault().geometry.location.lat.ToString();
+            position.Lon = root.results.FirstOrDefault().geometry.location.lng.ToString();
+            return position;
+
+
+        }
 
         //
         // GET: /Account/ConfirmEmail
