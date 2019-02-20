@@ -154,7 +154,7 @@ namespace E_Mechanik_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded && model.Role != null)
                 {
@@ -163,7 +163,6 @@ namespace E_Mechanik_Web.Controllers
                     if (model.Role == "Client")
                     {
                         var roleresult = UserManager.AddToRole(user.Id, "Client");
-                        return RedirectToAction("FillClientProfile", "Account");
                     }
                     else if (model.Role == "Mechanic")
                     {
@@ -190,7 +189,7 @@ namespace E_Mechanik_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult FillMechanicProfile([Bind(Include = "CompanyName,City,Address,PhoneNumber")] MechanicProfiles profile)
+        public ActionResult FillMechanicProfile([Bind(Include = "MechanicName,CompanyName,City,Address")] MechanicProfiles profile)
         {
         
             if (ModelState.IsValid)
@@ -198,7 +197,7 @@ namespace E_Mechanik_Web.Controllers
 
                 var Name = this.HttpContext.User.Identity.Name;
                 profile.MechanicName = Name;
-                profile.position = GetLatLongByAddress(profile.Address + " " + profile.City);
+              //  profile.position = GetLatLongByAddress(profile.Address + " " + profile.City);
                 _db.MechanicProfiles.Add(profile);
                 _db.SaveChanges();
                 return RedirectToAction("Index", "Home");
@@ -208,57 +207,33 @@ namespace E_Mechanik_Web.Controllers
         }
 
 
-        //[Authorize(Roles = "Client")]
-        public ActionResult FillClientProfile()
-        {
-            ClientProfile profile = new ClientProfile();
-            profile.ClientName = this.HttpContext.User.Identity.Name;
-            return View(profile);
-        }
+        //public static Position GetLatLongByAddress(string address)
+        //{
+        //    var position = new Position();
+        //    var root = new RootObject();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult FillClientProfile([Bind(Include = "CarBrand,CarModel,BodyType,EngineCapacity,GasType,LastTechnicalExamination, InsuranceEndDate,Country,PhoneNumber")] ClientProfile profile)
-        {
-            if (ModelState.IsValid)
-            {
+        //    var url =
+        //        string.Format(
+        //            "https://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false&key=AIzaSyAj3--uLCLX58Q-LFxJisocb1z97cerQjc", address);
+        //    var req = (HttpWebRequest)WebRequest.Create(url);
 
-                var Name = this.HttpContext.User.Identity.Name;
-                profile.ClientName = Name;
-                _db.ClientProfiles.Add(profile);
-                _db.SaveChanges();
-                return RedirectToAction("Index", "Home");
-            }
+        //    var res = (HttpWebResponse)req.GetResponse();
 
-            return View(profile);
-        }
-        public static Position GetLatLongByAddress(string address)
-        {
-            var position = new Position();
-            var root = new RootObject();
+        //    using (var streamreader = new StreamReader(res.GetResponseStream()))
+        //    {
+        //        var result = streamreader.ReadToEnd();
 
-            var url =
-                string.Format(
-                    "https://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false&key=AIzaSyAj3--uLCLX58Q-LFxJisocb1z97cerQjc", address);
-            var req = (HttpWebRequest)WebRequest.Create(url);
-
-            var res = (HttpWebResponse)req.GetResponse();
-
-            using (var streamreader = new StreamReader(res.GetResponseStream()))
-            {
-                var result = streamreader.ReadToEnd();
-
-                if (!string.IsNullOrWhiteSpace(result))
-                {
-                    root = JsonConvert.DeserializeObject<RootObject>(result);
-                }
-            }
-            position.Lat = root.results.FirstOrDefault().geometry.location.lat.ToString();
-            position.Lon = root.results.FirstOrDefault().geometry.location.lng.ToString();
-            return position;
+        //        if (!string.IsNullOrWhiteSpace(result))
+        //        {
+        //            root = JsonConvert.DeserializeObject<RootObject>(result);
+        //        }
+        //    }
+        //    position.Lat = root.results.FirstOrDefault().geometry.location.lat.ToString();
+        //    position.Lon = root.results.FirstOrDefault().geometry.location.lng.ToString();
+        //    return position;
 
 
-        }
+        //}
 
         //
         // GET: /Account/ConfirmEmail
@@ -490,26 +465,6 @@ namespace E_Mechanik_Web.Controllers
         {
             return View();
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        if (_userManager != null)
-        //        {
-        //            _userManager.Dispose();
-        //            _userManager = null;
-        //        }
-
-        //        if (_signInManager != null)
-        //        {
-        //            _signInManager.Dispose();
-        //            _signInManager = null;
-        //        }
-        //    }
-
-        //    base.Dispose(disposing);
-        //}
 
         #region Pomocnicy
         // Używane w przypadku ochrony XSRF podczas dodawania logowań zewnętrznych

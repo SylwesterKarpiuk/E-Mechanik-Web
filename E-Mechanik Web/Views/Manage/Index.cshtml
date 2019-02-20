@@ -24,21 +24,33 @@
             ]
 
         </dd>
-        <dt>Profil: </dt>
+
         @if (User.IsInRole("Mechanic"))
 
         {
+            <dt>Profil: </dt>
             <dd>
+                [
                 @Html.ActionLink("Edytuj profil", "EditMechanicProfile")
-                </dd>
-                }
-            
-            @if (User.IsInRole("Client"))
-            {
-                <dd>
-                    @Html.ActionLink("Edytuj profil", "EditClientProfile")
-                </dd>
-            }
-            
-        </dl>
+                ]
+            </dd>
+            <dt>Numer telefonu: </dt>
+            <dd>
+                [
+                @Html.ActionLink("Edytuj numer telefonu", "EditClientProfile")
+                ]
+            </dd>
+        }
+
+        @if (User.IsInRole("Client"))
+        {
+            <dt>Numer telefonu: </dt>
+            <dd>
+                [
+                @Html.ActionLink("Edytuj numer telefonu", "EditClientProfile")
+                ]
+            </dd>
+        }
+
+    </dl>
 </div>

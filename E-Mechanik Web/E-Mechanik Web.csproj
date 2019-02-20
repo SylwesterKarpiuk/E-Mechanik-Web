@@ -203,20 +203,25 @@
     <Compile Include="Migrations\201902091408246_MechanicProfileFix3.Designer.cs">
       <DependentUpon>201902091408246_MechanicProfileFix3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902201526588_x.cs" />
+    <Compile Include="Migrations\201902201526588_x.Designer.cs">
+      <DependentUpon>201902201526588_x.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201902201800059_mechanicProfileFix4.cs" />
+    <Compile Include="Migrations\201902201800059_mechanicProfileFix4.Designer.cs">
+      <DependentUpon>201902201800059_mechanicProfileFix4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\AvailableServiceCategory.cs" />
-    <Compile Include="Models\ClientProfile.cs" />
     <Compile Include="Models\GetLatLong.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MechanicProfiles.cs" />
     <Compile Include="Models\Message.cs" />
-    <Compile Include="Models\Position.cs" />
     <Compile Include="Models\Service.cs" />
-    <Compile Include="Models\ServiceCategory.cs" />
     <Compile Include="Models\AvailableService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -308,7 +313,6 @@
     <Content Include="Views\AvailableServices\Index.cshtml" />
     <Content Include="Views\Account\FillMechanicProfile.cshtml" />
     <Content Include="Views\Manage\EditMechanicProfile.cshtml" />
-    <Content Include="Views\Account\FillClientProfile.cshtml" />
     <Content Include="Views\Manage\EditClientProfile.cshtml" />
     <Content Include="Views\Services\GetServicesByName.cshtml" />
     <Content Include="Views\AvailableServiceCategories\GetCategoryByFilter.cshtml" />
@@ -342,6 +346,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902091408246_MechanicProfileFix3.resx">
       <DependentUpon>201902091408246_MechanicProfileFix3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902201526588_x.resx">
+      <DependentUpon>201902201526588_x.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902201800059_mechanicProfileFix4.resx">
+      <DependentUpon>201902201800059_mechanicProfileFix4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

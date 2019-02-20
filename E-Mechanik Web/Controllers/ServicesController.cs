@@ -70,10 +70,23 @@ namespace E_Mechanik_Web.Controllers
         // GET: Services/Create
         public ActionResult Create()
         {
-            var model = new CreateServiceViewModel();
-            model.Categories = _db.AvailableServiceCategories.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
-            model.Services = _db.AvailableServices.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
-            return View(model);
+            MechanicProfiles k = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
+            if (k!=null)
+            {
+                if (k.MechanicName == null || k.CompanyName == null || k.City == null || k.Address == null)
+                {
+                    return RedirectToAction("FillMechanicProfile", "Account");
+                }
+                var model = new CreateServiceViewModel();
+                model.Categories = _db.AvailableServiceCategories.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+                model.Services = _db.AvailableServices.Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("FillMechanicProfile", "Account");
+            }
+           
         }
 
         // POST: Services/Create

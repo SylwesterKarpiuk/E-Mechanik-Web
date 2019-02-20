@@ -81,6 +81,7 @@ namespace E_Mechanik_Web.Models
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage ="Zacznacz pole rejestracji jako mechanik, bądz klient")]
         public string Role { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     public class ResetPasswordViewModel

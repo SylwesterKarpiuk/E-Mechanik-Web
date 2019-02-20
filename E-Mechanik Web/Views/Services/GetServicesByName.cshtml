@@ -21,7 +21,9 @@
         </th>
         <th></th>
     </tr>
-    @{ int i = 0;}
+    @{ //int i = 0;
+
+    }}
     @foreach (var service in Model)
     {
         <tr>
@@ -78,7 +80,7 @@
                                         if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS" && response.rows[0].elements[0].status != "NOT_FOUND") {
                                             var distance = response.rows[0].elements[0].distance.text;
                                             document.getElementById(@Html.Raw(Json.Encode(@service.MechanicName))).innerHTML = distance;
-                                            array[@Html.Raw(Json.Encode(i))] = distance;
+                                            //array[//MAŁPAHtml.Raw(Json.Encode(i))] = distance;
                                         } else {
 
                                         }
