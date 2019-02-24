@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201902201800059_mechanicProfileFix4.Designer.cs">
       <DependentUpon>201902201800059_mechanicProfileFix4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201902201920560_mechanicProfileImageAdd.cs" />
+    <Compile Include="Migrations\201902201920560_mechanicProfileImageAdd.Designer.cs">
+      <DependentUpon>201902201920560_mechanicProfileImageAdd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -319,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadedFiles\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201902201800059_mechanicProfileFix4.resx">
       <DependentUpon>201902201800059_mechanicProfileFix4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201902201920560_mechanicProfileImageAdd.resx">
+      <DependentUpon>201902201920560_mechanicProfileImageAdd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

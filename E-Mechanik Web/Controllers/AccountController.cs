@@ -179,6 +179,8 @@ namespace E_Mechanik_Web.Controllers
             return View(model);
         }
 
+
+
         //[Authorize(Roles = "Mechanic")]
         public ActionResult FillMechanicProfile()
         {
@@ -186,56 +188,36 @@ namespace E_Mechanik_Web.Controllers
             profile.MechanicName = this.HttpContext.User.Identity.Name;
             return View(profile);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult FillMechanicProfile([Bind(Include = "MechanicName,CompanyName,City,Address")] MechanicProfiles profile)
-        {
-        
-            if (ModelState.IsValid)
-            {
-
-                var Name = this.HttpContext.User.Identity.Name;
-                profile.MechanicName = Name;
-              //  profile.position = GetLatLongByAddress(profile.Address + " " + profile.City);
-                _db.MechanicProfiles.Add(profile);
-                _db.SaveChanges();
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(profile);
-        }
-
-
-        //public static Position GetLatLongByAddress(string address)
+        //!!! Przy tworzeniu profilu mechanika wykorzystywana jest metoda EditMechanicProfile kontrolera Manage 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult FillMechanicProfile([Bind(Include = "MechanicName,CompanyName,City,Address")] MechanicProfiles profile, HttpPostedFileBase postedFile)
         //{
-        //    var position = new Position();
-        //    var root = new RootObject();
 
-        //    var url =
-        //        string.Format(
-        //            "https://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false&key=AIzaSyAj3--uLCLX58Q-LFxJisocb1z97cerQjc", address);
-        //    var req = (HttpWebRequest)WebRequest.Create(url);
-
-        //    var res = (HttpWebResponse)req.GetResponse();
-
-        //    using (var streamreader = new StreamReader(res.GetResponseStream()))
+        //    if (ModelState.IsValid)
         //    {
-        //        var result = streamreader.ReadToEnd();
-
-        //        if (!string.IsNullOrWhiteSpace(result))
+        //        if (postedFile != null && postedFile.ContentLength > 0)
         //        {
-        //            root = JsonConvert.DeserializeObject<RootObject>(result);
+
+        //            string _FileName = User.Identity.Name + " - " + Path.GetFileName(postedFile.FileName);
+        //            string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
+        //            if (System.IO.File.Exists(_path))
+        //            {
+        //                System.IO.File.Delete(_path);
+        //            }
+        //            postedFile.SaveAs(_path);
+        //            profile.ImagePatch = _path;
         //        }
+        //        var Name = this.HttpContext.User.Identity.Name;
+        //        profile.MechanicName = Name;
+        //        _db.MechanicProfiles.Add(profile);
+        //        _db.SaveChanges();
+        //        return RedirectToAction("Index", "Home");
         //    }
-        //    position.Lat = root.results.FirstOrDefault().geometry.location.lat.ToString();
-        //    position.Lon = root.results.FirstOrDefault().geometry.location.lng.ToString();
-        //    return position;
 
-
+        //    return View(profile);
         //}
 
-        //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)

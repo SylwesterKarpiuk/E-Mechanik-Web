@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using E_Mechanik_Web.Models;
 using System.Data.Entity;
+using System.IO;
 
 namespace E_Mechanik_Web.Controllers
 {
@@ -63,7 +64,7 @@ namespace E_Mechanik_Web.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "Dodano numer telefonu."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Usunięto numer telefonu."
                 : "";
-
+            MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
@@ -71,7 +72,8 @@ namespace E_Mechanik_Web.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                File = x.ImagePatch
             };
             return View(model);
         }
@@ -349,16 +351,38 @@ namespace E_Mechanik_Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditMechanicProfile([Bind(Include = "Id,CompanyName,Country,City,Address,PostalCode,MechanicName")] MechanicProfiles profile)
+        public ActionResult EditMechanicProfile([Bind(Include = "Id,CompanyName,Country,City,Address,PostalCode,MechanicName")] MechanicProfiles profile, HttpPostedFileBase postedFile)
         {
             if (ModelState.IsValid)
             {
+                string _path = "";
+                string _FileName = "";
+                if (postedFile !=null && postedFile.ContentLength > 0)
+                {
+                    _FileName = User.Identity.Name + " - " + Path.GetFileName(postedFile.FileName);
+                    _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
+                    if (System.IO.File.Exists(_path))
+                    {
+                        System.IO.File.Delete(_path);
+                    }
+                    postedFile.SaveAs(_path);
+                }
                 if (_db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault() != null)
                 {
                     MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
                     x.CompanyName = profile.CompanyName;
                     x.City = profile.City;
                     x.Address = profile.Address;
+                    if (x.ImagePatch!=null)
+                    {
+                        if (System.IO.File.Exists(x.ImagePatch))
+                        {
+                            System.IO.File.Delete(x.ImagePatch);
+                        }
+                        //prawdopodobnie będzie działać na serwerze -> x.ImagePatch = _path;
+                        x.ImagePatch = "~/UploadedFiles/" + _FileName; 
+                    }
+                    
                     _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
@@ -366,6 +390,12 @@ namespace E_Mechanik_Web.Controllers
                 {
                     var Name = this.HttpContext.User.Identity.Name;
                     profile.MechanicName = Name;
+                    if (_path != null)
+                    {
+                        //podobnie jak wyżej - profile.ImagePatch = _path;
+                        profile.ImagePatch = "~/UploadedFiles/" + _FileName;
+                    }
+
                     _db.MechanicProfiles.Add(profile);
                     _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
