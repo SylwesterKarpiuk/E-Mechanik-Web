@@ -53,5 +53,9 @@
         }
 
     </dl>
-    <img src="@Url.Content(Model.File)" alt="Image" />
+    @if (User.IsInRole("Mechanic"))
+    {
+        <img src="@Url.Content(Model.File)" alt="Image" class="resize"/>
+        
+    }
 </div>

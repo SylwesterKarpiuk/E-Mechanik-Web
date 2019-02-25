@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 using E_Mechanik_Web.Models;
 using System.Data.Entity;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace E_Mechanik_Web.Controllers
 {
@@ -34,9 +35,9 @@ namespace E_Mechanik_Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -56,27 +57,44 @@ namespace E_Mechanik_Web.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Zmieniono hasło."
-                : message == ManageMessageId.SetPasswordSuccess ? "Ustawiono hasło."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Ustawiono dostawcę uwierzytelniania dwuetapowego."
-                : message == ManageMessageId.Error ? "Wystąpił błąd."
-                : message == ManageMessageId.AddPhoneSuccess ? "Dodano numer telefonu."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Usunięto numer telefonu."
-                : "";
-            MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
             var userId = User.Identity.GetUserId();
+            if (this.User.IsInRole("Mechanic"))
+            {
+                MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
+                if (x == null)
+                {
+                    MechanicProfiles profile = new MechanicProfiles { MechanicName = this.User.Identity.Name };
+                    return View("EditMechanicProfile", profile);
+                }
+                
+
+                if (x.ImagePatch != null || x.ImagePatch != "")
+                {
+                    var model2 = new IndexViewModel
+                    {
+                        HasPassword = HasPassword(),
+                        PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                        TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                        Logins = await UserManager.GetLoginsAsync(userId),
+                        BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                        File = x.ImagePatch
+                    };
+                    return View(model2);
+
+                }
+                
+            }
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                File = x.ImagePatch
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             return View(model);
         }
+     
 
         //
         // POST: /Manage/RemoveLogin
@@ -345,6 +363,7 @@ namespace E_Mechanik_Web.Controllers
                 CompanyName = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.CompanyName).FirstOrDefault(),
                 City = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.City).FirstOrDefault(),
                 Address = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.Address).FirstOrDefault(),
+                ImagePatch = _db.MechanicProfiles.Where(m => m.MechanicName == this.User.Identity.Name).Select(k => k.ImagePatch).FirstOrDefault(),
             };
             return View(profile);
         }
@@ -357,11 +376,17 @@ namespace E_Mechanik_Web.Controllers
             {
                 string _path = "";
                 string _FileName = "";
-                if (postedFile !=null && postedFile.ContentLength > 0)
+                if (postedFile != null && postedFile.ContentLength > 0)
                 {
+                    if (!IsImage(postedFile))
+                    {
+                        ViewBag.image = "Niepawidłowy format zdjęcia";
+                        return View(profile);
+
+                    }
                     _FileName = User.Identity.Name + " - " + Path.GetFileName(postedFile.FileName);
                     _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
-                    if (System.IO.File.Exists(_path))
+                    if (System.IO.File.Exists(_path) &&  _path != "~/UploadedFiles/no-image.png")
                     {
                         System.IO.File.Delete(_path);
                     }
@@ -373,16 +398,19 @@ namespace E_Mechanik_Web.Controllers
                     x.CompanyName = profile.CompanyName;
                     x.City = profile.City;
                     x.Address = profile.Address;
-                    if (x.ImagePatch!=null)
+                    if (x.ImagePatch != null && _path != "~/UploadedFiles/no-image.png")
                     {
                         if (System.IO.File.Exists(x.ImagePatch))
                         {
                             System.IO.File.Delete(x.ImagePatch);
                         }
                         //prawdopodobnie będzie działać na serwerze -> x.ImagePatch = _path;
-                        x.ImagePatch = "~/UploadedFiles/" + _FileName; 
+                        x.ImagePatch = "~/UploadedFiles/" + _FileName;
                     }
-                    
+                    else
+                    {
+                        profile.ImagePatch = "~/UploadedFiles/no-image.png";
+                    }
                     _db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
@@ -390,10 +418,14 @@ namespace E_Mechanik_Web.Controllers
                 {
                     var Name = this.HttpContext.User.Identity.Name;
                     profile.MechanicName = Name;
-                    if (_path != null)
+                    if (_path != "")
                     {
                         //podobnie jak wyżej - profile.ImagePatch = _path;
                         profile.ImagePatch = "~/UploadedFiles/" + _FileName;
+                    }
+                    else
+                    {
+                        profile.ImagePatch = "~/UploadedFiles/no-image.png";
                     }
 
                     _db.MechanicProfiles.Add(profile);
@@ -401,10 +433,32 @@ namespace E_Mechanik_Web.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 // Edycja bazy danych bez użycia Entity Framework
-                
+
             }
 
             return View(profile);
+        }
+
+        public ActionResult AvatarDelete()
+        {
+            MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
+            if (x.ImagePatch != "~/UploadedFiles/no-image.png" && x.ImagePatch !=null)
+            {
+                x.ImagePatch = Server.MapPath("~/UploadedFiles/") + x.ImagePatch.Substring(x.ImagePatch.LastIndexOf('/'));
+                if (System.IO.File.Exists(x.ImagePatch))
+                {
+                    System.IO.File.Delete(x.ImagePatch);
+                }
+                x.ImagePatch = "~/UploadedFiles/no-image.png";
+                _db.SaveChanges();
+                ViewBag.result = "Pomyślnie usunięto miniature";
+                return View("EditMechanicProfile");
+            }
+            else
+            {
+                ViewBag.result = "Nie można usunąć domyślnej miniatury";
+                return View("EditMechanicProfile");
+            }
         }
 
         public ActionResult EditClientProfile()
@@ -413,8 +467,8 @@ namespace E_Mechanik_Web.Controllers
             {
                 Number = _db.Users.Where(m => m.Email == this.User.Identity.Name).Select(k => k.PhoneNumber).FirstOrDefault()
             };
-        
-            
+
+
             return View(num);
         }
 
@@ -424,14 +478,96 @@ namespace E_Mechanik_Web.Controllers
         {
             if (ModelState.IsValid)
             {
-               // ApplicationUser model = _db.Users.Where(c => c.Email == this.User.Identity.Name).FirstOrDefault();
-               // model.PhoneNumber = phone.Number;
+                // ApplicationUser model = _db.Users.Where(c => c.Email == this.User.Identity.Name).FirstOrDefault();
+                // model.PhoneNumber = phone.Number;
                 //IdentityResult result = await UserManager.UpdateAsync(model);
                 _db.Users.Where(z => z.Email == this.User.Identity.Name).FirstOrDefault().PhoneNumber = phone.Number;
                 _db.SaveChanges();
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        public const int ImageMinimumBytes = 512;
+        public static bool IsImage(HttpPostedFileBase postedFile)
+        {
+            //-------------------------------------------
+            //  Check the image mime types
+            //-------------------------------------------
+            if (!string.Equals(postedFile.ContentType, "image/jpg", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(postedFile.ContentType, "image/jpeg", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(postedFile.ContentType, "image/pjpeg", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(postedFile.ContentType, "image/gif", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(postedFile.ContentType, "image/x-png", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(postedFile.ContentType, "image/png", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Check the image extension
+            //-------------------------------------------
+            var postedFileExtension = Path.GetExtension(postedFile.FileName);
+            if (!string.Equals(postedFileExtension, ".jpg", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(postedFileExtension, ".png", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(postedFileExtension, ".gif", StringComparison.OrdinalIgnoreCase)
+                && !string.Equals(postedFileExtension, ".jpeg", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Attempt to read the file and check the first bytes
+            //-------------------------------------------
+            try
+            {
+                if (!postedFile.InputStream.CanRead)
+                {
+                    return false;
+                }
+                //------------------------------------------
+                //   Check whether the image size exceeding the limit or not
+                //------------------------------------------ 
+                if (postedFile.ContentLength < ImageMinimumBytes)
+                {
+                    return false;
+                }
+
+                byte[] buffer = new byte[ImageMinimumBytes];
+                postedFile.InputStream.Read(buffer, 0, ImageMinimumBytes);
+                string content = System.Text.Encoding.UTF8.GetString(buffer);
+                if (Regex.IsMatch(content, @"<script|<html|<head|<title|<body|<pre|<table|<a\s+href|<img|<plaintext|<cross\-domain\-policy",
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline))
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            //-------------------------------------------
+            //  Try to instantiate new Bitmap, if .NET will throw exception
+            //  we can assume that it's not a valid image
+            //-------------------------------------------
+
+            try
+            {
+                using (var bitmap = new System.Drawing.Bitmap(postedFile.InputStream))
+                {
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                postedFile.InputStream.Position = 0;
+            }
+
+            return true;
         }
 
         #region Pomocnicy
@@ -485,6 +621,6 @@ namespace E_Mechanik_Web.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

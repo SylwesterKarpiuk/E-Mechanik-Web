@@ -9,6 +9,7 @@ namespace E_Mechanik_Web.Models
     public class AvailableServiceCategory : IEntity
     {
         [Required]
+        [Display(Name = "Nazwa kategorii")]
         public string Name { get; set; }
         public virtual ICollection<AvailableService> AvailableServices { get; set; }
         public virtual ICollection<Service> Services { get; set; }
