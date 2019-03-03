@@ -177,30 +177,5 @@ namespace E_Mechanik_Web.Controllers
         
             return View(services);
         }
-        public static RootObject GetLatLongByAddress(string address)
-        {
-            var root = new RootObject();
-
-            var url =
-                string.Format(
-                    "https://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false&key=", address);
-            var req = (HttpWebRequest)WebRequest.Create(url);
-
-            var res = (HttpWebResponse)req.GetResponse();
-
-            using (var streamreader = new StreamReader(res.GetResponseStream()))
-            {
-                var result = streamreader.ReadToEnd();
-
-                if (!string.IsNullOrWhiteSpace(result))
-                {
-                    root = JsonConvert.DeserializeObject<RootObject>(result);
-                }
-            }
-
-            return root;
-
-
-        }
     }
 }

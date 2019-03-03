@@ -6,7 +6,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal topMargin" align="center" >
-        <div class="inner" >
+        <div class="inner">
             <h4>Edytuj profil</h4>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -38,7 +38,6 @@
                     @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                 </div>
             </div>
-
             <div class="form-group">
                 @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -46,6 +45,7 @@
                     @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                 </div>
             </div>
+
             <div class="">
                 <div class="">
                     <img src="@Url.Content(Model.ImagePatch)" alt="Image" class="resize control-label col-md-2" />

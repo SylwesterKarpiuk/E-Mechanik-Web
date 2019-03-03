@@ -44,4 +44,82 @@ textarea {
 .inner {
     width: 500px;
     margin: 0 auto;
+    min-height:400px;
+}
+
+.box-main {
+    display: flex;
+   
+}
+.box-left {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    text-align: center;
+    margin: 10% 10%;
+    min-width: 200px;
+    float: left;
+}
+
+.box-left-register {
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    max-width:1920px;
+    min-width:200px;
+    margin: 10% 22%;
+}
+
+.box-right {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 40%;
+    text-align: center;
+    margin: 10% 10%;
+    min-width: 200px;
+    float: right;
+}
+
+.box-content-layout {
+    margin: 0 auto;
+    padding-top: 50px;
+    margin-top: 0;
+
+}
+.box-footer-layout {
+    padding-top: 4px;
+    position: page;
+    bottom: 0;
+    text-align: center;
+    background-color: #fcfcfc;
+    padding-bottom: 1px;
+}
+.top-logo-layout{
+    width:100%;
+    height:50px;
+}
+.layout-logo-image {
+    width: 100%;
+    height: 50px;
+}
+.layout-logo-left{
+    float:left;
+    width:50px;
+    height:100%;
+}
+.layout-logo-right{
+    float:left;
+    width:auto;
+}
+.main-box-register {
+    margin-top:50px;
+    align-content:center;
+    width:auto;
+    height:auto;
+}
+.center-box-register{
+    text-align:center;
 }

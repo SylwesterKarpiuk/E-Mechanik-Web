@@ -9,15 +9,16 @@ namespace E_Mechanik_Web.Models
     public class MechanicProfiles : IEntity
     {
         [Display(Name ="Login: ")]
-        [Required]
+        
+        [Required(ErrorMessage ="To pole jest wymagane")]
         public string MechanicName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "To pole jest wymagane")]
         [Display(Name ="Nazwa zakładu")]
         public string CompanyName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "To pole jest wymagane")]
         [Display(Name = "Miasto")]
         public string City { get; set; }
-        [Required]
+        [Required(ErrorMessage = "To pole jest wymagane")]
         [Display(Name = "Adres")]
         public string Address { get; set; }
         public string ImagePatch { get; set; }

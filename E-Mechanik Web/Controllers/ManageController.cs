@@ -63,11 +63,12 @@ namespace E_Mechanik_Web.Controllers
                 MechanicProfiles x = _db.MechanicProfiles.Where(c => c.MechanicName == this.User.Identity.Name).FirstOrDefault();
                 if (x == null)
                 {
-                    MechanicProfiles profile = new MechanicProfiles { MechanicName = this.User.Identity.Name };
-                    return View("EditMechanicProfile", profile);
+                    //MechanicProfiles profile = new MechanicProfiles { MechanicName = this.User.Identity.Name, Address = "", City = "", CompanyName = "", ImagePatch="" };
+                    //return View("EditMechanicProfile", profile);
+                    return RedirectToAction("FillMechanicProfile", "Account");
                 }
-                
 
+                else {
                 if (x.ImagePatch != null || x.ImagePatch != "")
                 {
                     var model2 = new IndexViewModel
@@ -82,7 +83,7 @@ namespace E_Mechanik_Web.Controllers
                     return View(model2);
 
                 }
-                
+                }
             }
             var model = new IndexViewModel
             {
