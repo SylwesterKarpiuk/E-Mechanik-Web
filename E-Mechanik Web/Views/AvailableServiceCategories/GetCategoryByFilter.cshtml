@@ -2,42 +2,47 @@
 
 @{
     var list = new List<string>();
+    int i = 0;
 }
 
+<button class="left-paddle paddle" id="left">
+    <
+</button>
+<button class="right-paddle paddle">
+    >
+</button>
 
-<input id="lati" type="text">latitude</>
-<input id="long" type="text">longitude</>
-<div id="dvMap" style="min-height:500px; display: none"></div><!-- display: none - mapa się nie wyświetla użytkownikowi-->
-
-
-<script type="text/javascript">
-    navigator.geolocation.getCurrentPosition(function (position) {
-        var z = position.coords.latitude + ", " + position.coords.longitude;
-        document.getElementById('lati').value = z;
-    });
-</script>
-
-
-
-
+<br />
+<br />
 @foreach (var category in Model)
 {
-    list = new List<string>();
-    <div class="col-md-4">
-        <h2>@category.Name</h2>
-        <ul>
-            @foreach (var product in category.Services)
-            {
-                if (!list.Contains(product.Name))
-                {
-                    list.Add(product.Name);
-                    <li>
-                        @Html.ActionLink(@product.Name, "GetServicesByName", new { Controller = "Services", name = product.Name, myLat = "", lon = "" })
-                    </li>
 
+    list = new List<string>();
+    <div class="block">
+        <div class="center-image"><img src="~/Content/Images/logo.png" width="30" height="30" /></div>
+        <div style="text-align:center;">
+            <h4>@Html.ActionLink(@category.Name, "GetServicesByCategoryName", new { Controller = "AvailableServiceCategories", name = category.Name })</h4>
+        </div>
+        <div class="block-in-block">
+            <ul>
+
+                @foreach (var product in category.Services)
+                {
+                    if (!list.Contains(product.Name))
+                    {
+                        list.Add(product.Name);
+                        <li class="line">
+                            @Html.ActionLink(@product.Name, "GetServicesByName", new { Controller = "Services", name = product.Name })
+                        </li>
+
+                    }
                 }
 
-            }
-        </ul>
+            </ul>
+        </div>
     </div>
 }
+
+
+
+

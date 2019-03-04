@@ -188,35 +188,34 @@ namespace E_Mechanik_Web.Controllers
             profile.MechanicName = this.HttpContext.User.Identity.Name;
             return View(profile);
         }
-        //!!! Przy tworzeniu profilu mechanika wykorzystywana jest metoda EditMechanicProfile kontrolera Manage 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult FillMechanicProfile([Bind(Include = "MechanicName,CompanyName,City,Address")] MechanicProfiles profile, HttpPostedFileBase postedFile)
-        //{
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FillMechanicProfile([Bind(Include = "MechanicName,CompanyName,City,Address")] MechanicProfiles profile, HttpPostedFileBase postedFile)
+        {
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (postedFile != null && postedFile.ContentLength > 0)
-        //        {
+            if (ModelState.IsValid)
+            {
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
 
-        //            string _FileName = User.Identity.Name + " - " + Path.GetFileName(postedFile.FileName);
-        //            string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
-        //            if (System.IO.File.Exists(_path))
-        //            {
-        //                System.IO.File.Delete(_path);
-        //            }
-        //            postedFile.SaveAs(_path);
-        //            profile.ImagePatch = _path;
-        //        }
-        //        var Name = this.HttpContext.User.Identity.Name;
-        //        profile.MechanicName = Name;
-        //        _db.MechanicProfiles.Add(profile);
-        //        _db.SaveChanges();
-        //        return RedirectToAction("Index", "Home");
-        //    }
+                    string _FileName = User.Identity.Name + " - " + Path.GetFileName(postedFile.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _FileName);
+                    if (System.IO.File.Exists(_path))
+                    {
+                        System.IO.File.Delete(_path);
+                    }
+                    postedFile.SaveAs(_path);
+                    profile.ImagePatch = _path;
+                }
+                var Name = this.HttpContext.User.Identity.Name;
+                profile.MechanicName = Name;
+                _db.MechanicProfiles.Add(profile);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
 
-        //    return View(profile);
-        //}
+            return View(profile);
+        }
 
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]

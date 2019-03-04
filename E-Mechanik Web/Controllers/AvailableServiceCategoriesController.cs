@@ -145,5 +145,11 @@ namespace E_Mechanik_Web.Controllers
 
             return PartialView(model);
         }
+        public ActionResult GetServicesByCategoryName(string name)
+        {
+            AvailableServiceCategory categories = _db.AvailableServiceCategories.Where(c => c.Name == name).FirstOrDefault();
+
+            return RedirectToAction("Details",categories);
+        }
     }
 }

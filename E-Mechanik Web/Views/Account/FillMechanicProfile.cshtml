@@ -8,11 +8,10 @@
 <div class="main-box-register">
     <div class="center-box-register">
         <h3>Uzupełnij swój profil</h3>
-        @using (Html.BeginForm("EditMechanicProfile", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("FillMechanicProfile", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             <hr />
-            @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="form-group">
                 <div>
                     @Html.LabelFor(model => model.MechanicName, new { @class = "col-md-5 control-label" })
@@ -60,6 +59,4 @@
         }
     </div>
 </div>
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
