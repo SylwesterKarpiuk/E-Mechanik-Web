@@ -9,46 +9,54 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body style="background-color:#fefefe">
-
-        
+<body class="backgroundImage">
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="top-logo-layout container">
-            <div class="layout-logo-left"></div>
-            <img class="top-logo-image" src="~/Content/Images/logo.png" />
-        </div>
+        <div class="container">
+            <ul class="nav navbar-nav">
 
-        <div class="container" style="margin-top:5px">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Strona główna", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Wiadmości", "Index", "Messages")</li>
-                    <li>@Html.ActionLink("Usługi", "Index", "Services")</li>
-                    <li>@Html.ActionLink("Kategorie", "Index", "AvailableServiceCategories")</li>
-                    @if (User.Identity.IsAuthenticated)
+                @{ if (User.Identity.IsAuthenticated)
                     {
+                        <li style="border-left:1px dashed rgba(255, 255, 255,0.1);border-right:1px dashed rgba(255, 255, 255,0.1);">
+                            <a href="@Url.Action("Index", "Home")" style="margin-right:0px; margin-top:0px; margin-bottom:0px;  width:80px;height:50px; padding:0;">
+                                <img src="~/Content/Images/logo.png" style=" width:80px;height:50px; opacity:0.8" />
+                            </a>
+                        </li>
+
                         if (User.IsInRole("Admin"))
                         {
-                            <li>@Html.ActionLink("Dostępne kategorie usług", "Index", "AvailableServiceCategories")</li>
-                            <li>@Html.ActionLink("Dostępne usługi", "Index", "AvailableServices")</li>
+                            <li class="layout-button">@Html.ActionLink("Dostępne kategorie usług", "Index", "AvailableServiceCategories")</li>
+                            <li class="layout-button">@Html.ActionLink("Dostępne usługi", "Index", "AvailableServices")</li>
                         }
+
+                        <li class="layout-button">@Html.ActionLink("Usługi", "Index", "Services")</li>
+                        <li class="layout-button">@Html.ActionLink("Kategorie", "Index", "AvailableServiceCategories")</li>
+                        if(User.IsInRole("Mechanic"))
+                                {
+                            <li class="layout-button">@Html.ActionLink("Moje usługi", "MyServices", "Services")</li>
+                        }
+                        <li class="layout-button-last">@Html.ActionLink("Wiadmości", "Index", "Messages")</li>
+                        <li style="border-left: 1px dashed rgb(57, 57, 57); width:1px;height:50px;"></li>
                     }
+                    else
+                    {
+                        <li style="border-left:1px dashed rgba(255, 255, 255,0.1);border-right:1px dashed rgba(255, 255, 255,0.1);">
+                            <a href="@Url.Action("Index", "Home")" style="margin-right:0px; margin-top:0px; margin-bottom:0px;  width:80px;height:50px; padding:0;">
+                                <img src="~/Content/Images/logo.png" style=" width:80px;height:50px; opacity:0.8" />
+                            </a>
+                        </li>
+                        <li class="layout-button">@Html.ActionLink("Usługi", "Index", "Services")</li>
+                        <li class="layout-button-last">@Html.ActionLink("Kategorie", "Index", "AvailableServiceCategories")</li>
+                        <li style="border-left: 1px dashed rgb(57, 57, 57); width:1px;height:50px;"></li>
+                    }
+                }
 
 
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+            </ul>
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
     <div class="containers">
-        <div class="box-content-layout container"  style="background-color:#fdfdfd">
+        <div class="box-content-layout container" style="background-color:rgba(0,0,0,0.02)">
             @RenderBody()
         </div>
         <hr />

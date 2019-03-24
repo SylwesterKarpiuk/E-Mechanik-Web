@@ -48,6 +48,7 @@ namespace E_Mechanik_Web.Controllers
             return View(availableServiceCategories);
         }
 
+        [Authorize(Roles ="Admin")]
         // GET: AvailableServiceCategories/Create
         public ActionResult Create()
         {
@@ -57,6 +58,8 @@ namespace E_Mechanik_Web.Controllers
         // POST: AvailableServiceCategories/Create
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name")] AvailableServiceCategory availableServiceCategories)
@@ -71,6 +74,8 @@ namespace E_Mechanik_Web.Controllers
             return View(availableServiceCategories);
         }
 
+
+        [Authorize(Roles = "Admin")]
         // GET: AvailableServiceCategories/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -90,6 +95,8 @@ namespace E_Mechanik_Web.Controllers
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name")] AvailableServiceCategory availableServiceCategories)
         {
@@ -103,6 +110,8 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // GET: AvailableServiceCategories/Delete/5
+
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -118,6 +127,8 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // POST: AvailableServiceCategories/Delete/5
+
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

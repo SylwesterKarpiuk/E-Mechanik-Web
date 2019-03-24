@@ -453,12 +453,12 @@ namespace E_Mechanik_Web.Controllers
                 x.ImagePatch = "~/UploadedFiles/no-image.png";
                 _db.SaveChanges();
                 ViewBag.result = "Pomyślnie usunięto miniature";
-                return View("EditMechanicProfile");
+                return RedirectToAction("EditMechanicProfile");
             }
             else
             {
                 ViewBag.result = "Nie można usunąć domyślnej miniatury";
-                return View("EditMechanicProfile");
+                return RedirectToAction("EditMechanicProfile");
             }
         }
 

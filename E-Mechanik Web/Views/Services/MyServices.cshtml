@@ -1,0 +1,22 @@
+﻿@model IEnumerable<E_Mechanik_Web.Models.Service>
+
+<hr style="height:1px; background-color:rgba(0,0,0,0.5);" />
+<div class="CustomHeader" style="height:90px">
+
+    <h2>Twoje usługi:  <button style="float:right; margin-right:30px; width:50px; height:50px; margin-top:-10px; border-radius:50%; background-color:white; font-size:40px;">@Html.ActionLink("+", "Create", null, new { style = "text-decoration:none;" })</button></h2>
+
+</div>
+
+<div class="allServicesFromCategoryBox">
+
+
+    @foreach (var item in Model)
+    {
+        <div class="singleServiceBox LinkColor" style="position:relative">
+            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink("Usuń", "Delete", new { id = item.Id }, new { style = "float:right; margin-right:40px; color:whitesmoke;" })
+        </div>
+    }
+
+</div>
+<hr style="height:1px; background-color:rgba(0,0,0,0.5); margin-top:30px; position:relative" />

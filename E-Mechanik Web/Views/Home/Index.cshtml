@@ -1,8 +1,8 @@
 ﻿
 <div class="page-header">
-    <p class="lead">Wyszukiwarka somochodowych usług serwisowych</p>
-</div>
+    <p style="float:right; padding-right:50px; color:whitesmoke; font-size:large; margin-top:30px;" >Wyszukiwarka somochodowych usług serwisowych</p>
 
+</div>
 
 <div class="custom-container">
     @using (Ajax.BeginForm(new AjaxOptions
@@ -13,96 +13,18 @@
         UpdateTargetId = "Categories"
     }))
     {
-        <div style="float:right; display:flex; margin-right:30px;">
-            <input type="text" name="search" class="form-control" />
-            <input type="submit" value=" Szukaj " class="btn btn-default" />
-            <br />
+        <hr style="height:1px; background-color:rgba(0,0,0,0.5); margin-top:30px; position:relative" />
+
+        <div style="display:flex; margin-right:30px; margin-left:30px; margin-top:15px;" class="input-group-lg">
+            <input type="text" name="search" placeholder="Szukaj..." class="form-control " style="height:55px;" />
+            <button type="submit" class="btn-default btn"><img src="~/Content/Images/Lupa.png" style="height:40px;width:50px;image-rendering: optimizeQuality"></button>
         </div>
+       <hr style="height:1px; background-color:rgba(0,0,0,0.5); margin-top:30px; position:relative" />
 
     }
 
     <div id="Categories">
+
         @Html.Action("GetCategoryByFilter", new { Controller = "AvailableServiceCategories" })
     </div>
 </div>
-@section Scripts{
-    <script type="text/javascript">
-        var scrollDuration = 650;
-        var leftPaddle = document.getElementsByClassName('left-paddle');
-        var rightPaddle = document.getElementsByClassName('right-paddle');
-        var itemsLength = $('.line').length;
-        var itemSize = $('.line').outerHeight(true);
-        var x = 0;
-        // get some relevant size for the paddle triggering point
-        var paddleMargin = 10;
-
-        // get wrapper width
-        var getMenuWrapperSize = function () {
-            return $('.block-in-block').outerHeight();
-        }
-        var menuWrapperSize = getMenuWrapperSize();
-        // the wrapper is responsive
-        $(window).on('resize', function () {
-            menuWrapperSize = getMenuWrapperSize();
-        });
-        // size of the visible part of the menu is equal as the wrapper size
-        var menuVisibleSize = menuWrapperSize;
-
-        // get total width of all menu items
-        var getMenuSize = function () {
-            return itemsLength * itemSize;
-        };
-        var menuSize = getMenuSize();
-        // get how much of menu is invisible
-        var menuInvisibleSize = menuSize - menuWrapperSize;
-
-        // get how much have we scrolled to the left
-        var getMenuPosition = function () {
-            return $('.block-in-block').scrollTop();
-        };
-
-        // finally, what happens when we are actually scrolling the menu
-        $('.block-in-block').on('scroll', function () {
-
-            // get how much of menu is invisible
-            menuInvisibleSize = menuSize - menuWrapperSize;
-            // get how much have we scrolled so far
-            var menuPosition = getMenuPosition();
-
-            var menuEndOffset = menuInvisibleSize - paddleMargin;
-
-            // show & hide the paddles
-            // depending on scroll position
-            if (menuPosition <= paddleMargin) {
-                $(leftPaddle).addClass('hidden');
-                $(rightPaddle).removeClass('hidden');
-            } else if (menuPosition < menuEndOffset) {
-                // show both paddles in the middle
-                $(leftPaddle).removeClass('hidden');
-                $(rightPaddle).removeClass('hidden');
-            } else if (menuPosition >= menuEndOffset) {
-                $(leftPaddle).removeClass('hidden');
-                $(rightPaddle).addClass('hidden');
-            }
-        });
-       
-        // scroll to left
-        $(rightPaddle).on('click', function () {
-            if (x < menuWrapperSize) {
-                x = x + 50;
-                $('.block-in-block').animate({ scrollTop: x }, scrollDuration);
-            }
-
-
-        });
-
-        // scroll to right
-        $(leftPaddle).on('click', function () {
-            if (x > 0) {
-                x = x - 50;
-                $('.block-in-block').animate({ scrollTop: x }, scrollDuration);
-            }
-
-        });
-    </script>
-}

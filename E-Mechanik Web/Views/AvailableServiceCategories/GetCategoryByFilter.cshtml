@@ -3,26 +3,18 @@
 @{
     var list = new List<string>();
     int i = 0;
+
 }
 
-<button class="left-paddle paddle" id="left">
-    <
-</button>
-<button class="right-paddle paddle">
-    >
-</button>
-
-<br />
-<br />
 @foreach (var category in Model)
 {
-
+    i = 0;
     list = new List<string>();
-    <div class="block">
-        <div class="center-image"><img src="~/Content/Images/logo.png" width="30" height="30" /></div>
-        <div style="text-align:center;">
-            <h4>@Html.ActionLink(@category.Name, "GetServicesByCategoryName", new { Controller = "AvailableServiceCategories", name = category.Name })</h4>
-        </div>
+<div class="block" >
+    <div class="block-for-block-title">
+        <h4  class="block-title"> @Html.ActionLink(@category.Name, "GetServicesByCategoryName", new { Controller = "AvailableServiceCategories", name = category.Name })</h4>
+    </div>
+    <div class="block-under-title">
         <div class="block-in-block">
             <ul>
 
@@ -34,13 +26,21 @@
                         <li class="line">
                             @Html.ActionLink(@product.Name, "GetServicesByName", new { Controller = "Services", name = product.Name })
                         </li>
-
+                        i = 1;
                     }
+                }
+                @if (i == 0)
+                {
+                    <li class="line">
+                        Brak usług
+                    </li>
                 }
 
             </ul>
         </div>
     </div>
+</div>
+
 }
 
 

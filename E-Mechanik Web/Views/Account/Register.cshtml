@@ -1,9 +1,9 @@
 ﻿@model E_Mechanik_Web.Models.RegisterViewModel
 
 
+<div class="box-main" style="margin-top:-50px">
 
-<div class="main-box-register">
-    <div class="center-box-register">
+    <div class="box-left">
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
@@ -11,30 +11,30 @@
             <hr />
             @Html.ValidationSummary("", new { @class = "text-danger" })
             <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.Email, new { @class = "col-md-5 control-label" })  @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-5 control-label" })  @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-5 control-label" })  @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                <div>
-                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-5 control-label" })  @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "custom-text-form" })
 
-                <b class="col-md-5 control-label">Rejestruj jako</b>
+                @Html.TextBoxFor(m => m.Email, new { @class = "custom-input-form" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group Closer">
+                @Html.LabelFor(m => m.Password, new { @class = "custom-text-form" })
+                @Html.PasswordFor(m => m.Password, new { @class = "custom-input-form" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group Closer">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "custom-text-form" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "custom-input-form" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group Closer">
+                @Html.LabelFor(m => m.PhoneNumber, new { @class = "custom-text-form" })
+                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "custom-input-form" })
+                @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group Closer" style="display:inline-block">
 
-                <div class="form-control-static" style="text-align:left">
+                <b>Rejestruj jako:&nbsp  </b>
+                <div style="text-align:left">
                     Client @Html.RadioButtonFor(m => m.Role, "Client")
                     &nbsp
                     Mechanic @Html.RadioButtonFor(m => m.Role, "Mechanic")
@@ -47,8 +47,17 @@
             </div>
         }
     </div>
-</div>
+    <div style="border-left:1px solid #d1d1d1;height:500px; margin-top:50px"></div>
+    <div class="box-right" style="margin-top:150px">
+        <div>
+            <hr />
+            <h2>Masz już konto?</h2>
+            <input class="btn btn-default" style="margin-top:15px" type="button" value="Zaloguj się" onclick="location.href='@Url.Action("Login", "Account")'" />
+            <hr />
+        </div>
+    </div>
 
+</div>
 
 
 @section Scripts {

@@ -207,6 +207,10 @@ namespace E_Mechanik_Web.Controllers
                     postedFile.SaveAs(_path);
                     profile.ImagePatch = _path;
                 }
+                else
+                {
+                    profile.ImagePatch = "~/UploadedFiles/no-image.png";
+                }
                 var Name = this.HttpContext.User.Identity.Name;
                 profile.MechanicName = Name;
                 _db.MechanicProfiles.Add(profile);

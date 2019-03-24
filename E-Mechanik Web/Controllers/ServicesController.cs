@@ -93,6 +93,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Mechanic")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Name,Price,ExecutionTime,AvailableServiceCategoryId")] Service service)
         {
@@ -104,7 +105,7 @@ namespace E_Mechanik_Web.Controllers
                 service.mechanicProfile = _db.MechanicProfiles.Where(c => c.MechanicName == service.MechanicName).FirstOrDefault();
                 _db.Services.Add(service);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyServices");
             }
 
             return View(service);
@@ -132,6 +133,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Mechanic")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,Price,ExecutionTime,MechanicId,ServiceId")] Service service)
         {
@@ -139,7 +141,7 @@ namespace E_Mechanik_Web.Controllers
             {
                 _db.Entry(service).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyServices");
             }
             return View(service);
         }
@@ -153,11 +155,19 @@ namespace E_Mechanik_Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Service service = _db.Services.Find(id);
+           
             if (service == null)
             {
                 return HttpNotFound();
             }
-            return View(service);
+            if (service.MechanicName == User.Identity.Name)
+            {
+                return View(service);
+            }
+            else
+            {
+                return HttpNotFound();
+            }
         }
 
         // POST: Services/Delete/5
@@ -168,13 +178,19 @@ namespace E_Mechanik_Web.Controllers
             Service service = _db.Services.Find(id);
             _db.Services.Remove(service);
             _db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("MyServices");
         }
 
         public ActionResult GetServicesByName(string name)
         {
             IEnumerable<Service> services = _db.Services.Where(c => c.Name == name);
         
+            return View(services);
+        }
+        [Authorize(Roles ="Mechanic")]
+        public ActionResult MyServices()
+        {
+            IEnumerable<Service> services = _db.Services.Where(c => c.MechanicName == User.Identity.Name);
             return View(services);
         }
     }

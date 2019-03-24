@@ -14,6 +14,7 @@ namespace E_Mechanik_Web.Controllers
     public class MessagesController : BaseController
     {
         // GET: Messages
+        [Authorize]
         public ActionResult Index()
         {
             var message = _db.Messages.Where(c=>c.ReceiverName == User.Identity.Name);
@@ -25,6 +26,7 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // GET: Messages/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -40,6 +42,7 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // GET: Messages/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -49,6 +52,7 @@ namespace E_Mechanik_Web.Controllers
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,SenderName,ReceiverName,Subject,Text")] Message message)
         {
@@ -63,7 +67,7 @@ namespace E_Mechanik_Web.Controllers
 
             return View(message);
         }
-
+        [Authorize]
         // GET: Messages/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -78,7 +82,7 @@ namespace E_Mechanik_Web.Controllers
             }
             return View(message);
         }
-
+        [Authorize]
         // POST: Messages/Edit/5
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -94,7 +98,7 @@ namespace E_Mechanik_Web.Controllers
             }
             return View(message);
         }
-
+        [Authorize]
         // GET: Messages/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -109,7 +113,7 @@ namespace E_Mechanik_Web.Controllers
             }
             return View(message);
         }
-
+        [Authorize]
         // POST: Messages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -121,13 +125,5 @@ namespace E_Mechanik_Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        _db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

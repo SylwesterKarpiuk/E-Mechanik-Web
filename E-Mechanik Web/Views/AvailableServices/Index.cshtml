@@ -1,32 +1,34 @@
 ﻿@model IEnumerable<E_Mechanik_Web.Models.AvailableService>
 
-@{
-    ViewBag.Title = "Index";
+<hr />
+<div class="CustomHeader" style="height:90px">
+    <h2>Dostępne usługi: </h2>
+</div>
+
+<div class="allServicesFromCategoryBox">
+
+    @foreach (var item in Model)
+    {
+    <div class="singleServiceBox">
+        @Html.ActionLink(@item.Name, "GetServicesByName", new { Controller = "Services", name = item.Name }, new { @class = "LinkColor" })
+        @if (User.IsInRole("Admin"))
+        {
+            <div style="float:right; margin-right:20px;">
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </div>
+        }
+    </div>
+
+
+    }
+
+
+
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <p style="float:right; margin-right:150px; margin-top:30px; font-size:large">
+        @Html.ActionLink("Dodaj usługę", "Create")
+    </p>
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>

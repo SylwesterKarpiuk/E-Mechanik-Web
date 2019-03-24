@@ -35,6 +35,8 @@ namespace E_Mechanik_Web.Controllers
             return View(availableService);
         }
 
+
+        [Authorize(Roles = "Admin")]
         // GET: AvailableServices/Create
         public ActionResult Create()
         {
@@ -47,6 +49,8 @@ namespace E_Mechanik_Web.Controllers
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,AvailableServiceCategoryId")] AvailableService availableService)
         {
@@ -61,6 +65,8 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // GET: AvailableServices/Edit/5
+
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -80,6 +86,8 @@ namespace E_Mechanik_Web.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "Id,Name,AvailableServiceCategoryId")] AvailableService availableService)
         {
             if (ModelState.IsValid)
@@ -92,6 +100,8 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // GET: AvailableServices/Delete/5
+
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -107,6 +117,8 @@ namespace E_Mechanik_Web.Controllers
         }
 
         // POST: AvailableServices/Delete/5
+
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

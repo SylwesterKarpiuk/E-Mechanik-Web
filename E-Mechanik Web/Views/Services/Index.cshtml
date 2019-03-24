@@ -1,29 +1,22 @@
 ﻿@model IEnumerable<E_Mechanik_Web.Models.Service>
 
-@{
-    ViewBag.Title = "Index";
-}
 
-<h2>Index</h2>
+<hr style="height:1px; background-color:rgba(0,0,0,0.5);" />
+<div class="CustomHeader" style="height:90px">
+    <h2>Dostępne usługi: </h2>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
+<div class="allServicesFromCategoryBox">
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(item.Name, "GetServicesByName", new { name = item.Name })
-        </td>
+    @foreach (var item in Model)
+    {
+        <div class="singleServiceBox">
+            @Html.ActionLink(@item.Name, "GetServicesByName", new { Controller = "Services", name = item.Name }, new { @class = "LinkColor" })
 
-    </tr>
-}
+        </div>
 
-</table>
+
+    }
+
+ </div>
+<hr style="height:1px; background-color:rgba(0,0,0,0.5);" />
