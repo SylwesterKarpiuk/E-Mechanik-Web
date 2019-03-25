@@ -21,11 +21,14 @@
         </th>
         <th></th>
     </tr>
-    @{ //int i = 0;
 
-    }}
+
     @foreach (var service in Model)
     {
+        @Html.Hidden("PostID", service.Distance);
+        service.Distance="0";
+        do
+        {
         <tr>
             <td>
                 @Html.ActionLink(service.Name, "Details", new { id = service.Id })
@@ -80,6 +83,7 @@
                                         if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS" && response.rows[0].elements[0].status != "NOT_FOUND") {
                                             var distance = response.rows[0].elements[0].distance.text;
                                             document.getElementById(@Html.Raw(Json.Encode(@service.MechanicName))).innerHTML = distance;
+                                            document.getElementById('niewiem').innerHTML = "elo";
                                             //array[//MAŁPAHtml.Raw(Json.Encode(i))] = distance;
                                         } else {
 
@@ -92,12 +96,12 @@
 
 
                     </script>
+
                 }
             </td>
         </tr>
-    }
+                        } while (service.Distance == "0");
+                    }
 
 </table>
 <!---TODO - button powalający na sortowanie wyników-->
-
-

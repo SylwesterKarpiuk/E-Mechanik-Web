@@ -1,57 +1,54 @@
 ﻿@model IEnumerable<E_Mechanik_Web.Models.Message>
 
-@{
-    ViewBag.Title = "Index";
-}
+<hr style="height:1px; background-color:rgba(0,0,0,0.5);" />
+<div class="CustomHeader" style="height:90px">
 
-<h2>Index</h2>
+    <h2 style="margin-left:-10px;">Wiadomości:  <button style="float:right; margin-right:30px; width:50px; height:50px; margin-top:-10px; border-radius:50%; background-color:white; font-size:40px;">@Html.ActionLink("+", "Create", null, new { style = "text-decoration:none;" })</button></h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SenderName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReceiverName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Text)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SendTime)
-        </th>
-        <th></th>
-    </tr>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SenderName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReceiverName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Subject)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Text)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SendTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
 
-</table>
+<div class="allServicesFromCategoryBox">
+
+    @foreach (var item in Model)
+    {
+        <div class="singleMessageBox" >
+            <div style="background-color:rgba(0,0,0,0.1); width:100%; padding-left: 20px; margin-top: 4px; padding-top:8px; padding-bottom:5px; text-decoration:none; color:floralwhite">
+                <div style="background-color:rgba(255,255,255,0.1); border: 1px solid white;">
+                    
+                    <div style="cursor:pointer" onclick="location.href='messages/Details/?id=@item.Id'">
+
+                        &nbsp;
+                        <div style="display:inline; border-right:1px solid white; width:200px;">
+                            @item.SenderName &nbsp;
+                        </div>
+                        <div style="display:inline; width:10px;">
+                        </div>
+                        <div style="display:inline;  solid white; width:300px; min-width:300px;  margin-left:3px;">
+                            @item.Subject &nbsp;
+                        </div>
+                        <div style="display:inline; width:10px;  margin-left:3px;">
+                        </div>
+                        <div style="display:inline; float:right; border-left:1px solid white;width:160px;padding-left:10px;  margin-right:150px;">
+                            @item.SendTime &nbsp;
+                        </div>
+                    </div>
+
+                    <div style="float:right; display:inline-block;  margin-top:-23px;">
+                        <button class="btn btn-default" style="height:22px; padding-top:0px;">@Html.ActionLink("Odpowiedz", "Reply", new { id = item.Id })</button>
+                        <button class="btn btn-default" style="height:22px; padding-top:0px;">@Html.ActionLink("Usuń", "Delete", new { id = item.Id }, new { onclick = "return confirm('Czy na pewno chcesz usunąć tę wiadomość?')" })</button>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+
+        </div>
+    }
+
+</div>
+<hr style="height:1px; background-color:rgba(0,0,0,0.5); margin-top:30px; position:relative" />

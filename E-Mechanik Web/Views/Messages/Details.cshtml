@@ -1,58 +1,56 @@
 ﻿@model E_Mechanik_Web.Models.Message
 
-@{
-    ViewBag.Title = "Details";
-}
 
-<h2>Details</h2>
 
-<div>
-    <h4>Message</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.SenderName)
-        </dt>
+    <div class="customHr" style="display:inline-block; margin-top:40px"/>
+    <div style="margin-top:50px;">
+        <div class="allServicesFromCategoryBox">
 
-        <dd>
-            @Html.DisplayFor(model => model.SenderName)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.ReceiverName)
-        </dt>
+            <dl class="dl-horizontal">
 
-        <dd>
-            @Html.DisplayFor(model => model.ReceiverName)
-        </dd>
+                <dt class="messageDetailsHeader">
+                    @Html.DisplayNameFor(model => model.SenderName):
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Subject)
-        </dt>
+                <dd class="messageDetailsHeader2">
+                    @Html.DisplayFor(model => model.SenderName)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Subject)
-        </dd>
+                <dt class="messageDetailsHeader">
+                    @Html.DisplayNameFor(model => model.Subject):
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Text)
-        </dt>
+                <dd class="messageDetailsHeader2">
+                    @Html.DisplayFor(model => model.Subject)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Text)
-        </dd>
+                <dt class="messageDetailsHeader">
+                    <b>Odebrano: </b>
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SendTime)
-        </dt>
+                <dd class="messageDetailsHeader2">
+                    @Html.DisplayFor(model => model.SendTime)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.SendTime)
-        </dd>
+                <dt class="messageDetailsHeader">
+                    @Html.DisplayNameFor(model => model.Text):
+                </dt>
 
-    </dl>
+                <dd class="messageDetailsTextHeader3">
+                    @Html.DisplayFor(model => model.Text)
+                </dd>
+
+            </dl>
+
+        </div>
+        <div style="float:right;margin-top:-18px; margin-right:150px;">
+            <button style="border:1px solid black;" class="btn btn-default">@Html.ActionLink("Odpowiedz", "Reply", new { id = Model.Id })</button>
+        </div>
+        <div class="customHr" style="display:inline-block; margin-top:40px" />
+    </div>
+
+<div style="float:left; position:absolute; margin-top:15px; margin-left:30px;">
+    <button class="btn btn-default"> @Html.ActionLink("Wróć do skrzynki", "Index")</button>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

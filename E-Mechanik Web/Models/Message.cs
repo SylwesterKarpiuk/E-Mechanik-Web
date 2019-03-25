@@ -17,6 +17,7 @@ namespace E_Mechanik_Web.Models
         public string Subject { get; set; }
         [Required]
         [Display(Name = "Wiadomość")]
+        [DataType(DataType.MultilineText)]
         public string Text { get; set; }
         [Display(Name = "Wiadomość została wysłana")]
         public string SendTime { get; set; }

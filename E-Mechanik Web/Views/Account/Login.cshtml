@@ -8,13 +8,16 @@
 <div class="box-main">
 
     <div class="box-left">
+
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                <hr />
+                <div class="customHr"></div>
+                <h3>Logowanie</h3>
+                <div class="customHr" style="margin-top:15px"></div>
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group" style="display:inline-block">
+                <div class="form-group" style="display:inline-block; margin-top:25px;">
                     @Html.LabelFor(m => m.Email, new { @class = "custom-text-form" })
 
                     @Html.TextBoxFor(m => m.Email, new { @class = "custom-input-form" })
@@ -26,26 +29,27 @@
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group Closer">
-                    <div class="CheckBoxFormat ">
+                    <div class="CheckBoxFormat" style="margin-right:5px;">
                         @Html.CheckBoxFor(m => m.RememberMe)
                     </div>
-                    @Html.LabelFor(m => m.RememberMe, new { @class = "TextFormat" })
+                    @Html.LabelFor(m => m.RememberMe, new { @class = "TextFormat", style="margin-right:5px"})
 
                 </div>
-                <div class="form-group" >
+                <div class="form-group">
                     <input type="submit" value="Zaloguj" class="btn btn-default Closer" />
                 </div>
-                    <hr />
-                    }
-            </section>
+                <hr />
+            }
+        </section>
     </div>
     <div style="border-left:1px solid #d1d1d1;height:500px"></div>
     <div class="box-right">
         <div>
-            <hr />
+            <div style="margin-top:20px;" class="customHr"></div>
             <h2>Nie masz jeszcze konta?</h2>
+            <div style="margin-top:20px;" class="customHr"></div>
             <input class="btn btn-default" style="margin-top:15px" type="button" value="Zarejestruj się" onclick="location.href='@Url.Action("Register", "Account")'" />
-            <hr />
+
         </div>
     </div>
 

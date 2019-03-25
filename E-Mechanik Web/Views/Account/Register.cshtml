@@ -1,16 +1,16 @@
 ﻿@model E_Mechanik_Web.Models.RegisterViewModel
 
-
 <div class="box-main" style="margin-top:-50px">
 
     <div class="box-left">
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
+            <div class="customHr"></div>
             <h3>Utwórz nowe konto</h3>
-            <hr />
+            <div class="customHr" style="margin-top:15px"></div>
             @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div class="form-group">
+            <div class="form-group" style="margin-top:15px">
                 @Html.LabelFor(m => m.Email, new { @class = "custom-text-form" })
 
                 @Html.TextBoxFor(m => m.Email, new { @class = "custom-input-form" })
@@ -45,15 +45,21 @@
                     <input type="submit" class="btn btn-default" value="Zarejestruj" />
                 </div>
             </div>
+
+
         }
+
     </div>
     <div style="border-left:1px solid #d1d1d1;height:500px; margin-top:50px"></div>
     <div class="box-right" style="margin-top:150px">
         <div>
-            <hr />
+            <div class="customHr"></div>
+
             <h2>Masz już konto?</h2>
+            <div style="margin-top:20px;" class="customHr"></div>
             <input class="btn btn-default" style="margin-top:15px" type="button" value="Zaloguj się" onclick="location.href='@Url.Action("Login", "Account")'" />
-            <hr />
+
+
         </div>
     </div>
 

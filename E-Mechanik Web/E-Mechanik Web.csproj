@@ -219,6 +219,10 @@
     <Compile Include="Migrations\201903032226215_zx.Designer.cs">
       <DependentUpon>201903032226215_zx.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903251552593_MessageFix.cs" />
+    <Compile Include="Migrations\201903251552593_MessageFix.Designer.cs">
+      <DependentUpon>201903251552593_MessageFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -327,6 +331,7 @@
     <Content Include="Views\Services\GetServicesByName.cshtml" />
     <Content Include="Views\AvailableServiceCategories\GetCategoryByFilter.cshtml" />
     <Content Include="Views\Services\MyServices.cshtml" />
+    <Content Include="Views\Messages\Reply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -369,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903032226215_zx.resx">
       <DependentUpon>201903032226215_zx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903251552593_MessageFix.resx">
+      <DependentUpon>201903251552593_MessageFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
