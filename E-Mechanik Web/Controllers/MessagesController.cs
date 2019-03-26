@@ -40,7 +40,12 @@ namespace E_Mechanik_Web.Controllers
             }
             return View(message);
         }
-
+        [Authorize]
+        public ActionResult DirectMessage(string to)
+        {
+            Message message = new Message { ReceiverName = to };
+            return View("Create", message);
+        }
         // GET: Messages/Create
         [Authorize]
         public ActionResult Create()
